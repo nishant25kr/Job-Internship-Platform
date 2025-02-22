@@ -5,10 +5,6 @@ import "./Navbar.css";
 import { GiPoliceBadge } from "react-icons/gi";
 import { CgProfile } from "react-icons/cg";
 
-
-
-
-
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name,setname]=useState("")
@@ -49,10 +45,10 @@ export default function Navbar() {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div className="navbar-nav">
-                <a className="nav-item nav-link px-5 text-light" to="#">Home</a>
-                <a className="nav-item nav-link px-5 text-light" to="#">Features</a>
-                <a className="nav-item nav-link px-5 text-light" to="#">Pricing</a>
-                <a className="nav-item nav-link px-5 text-light " to="#">Disabled</a>
+                <Link className="nav-item nav-link px-5 text-light" to="/">Home</Link>
+                <Link className="nav-item nav-link px-5 text-light" to="/jobs">Jobs</Link>
+                <Link className="nav-item nav-link px-5 text-light" to="/internships">Internships</Link>
+                <Link className="nav-item nav-link px-5 text-light " to="#">About Us</Link>
               </div>
             </div>
           </nav>

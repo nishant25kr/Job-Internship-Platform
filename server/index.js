@@ -28,6 +28,7 @@ const mySchema = new mongoose.Schema({
 
 const myModel = mongoose.model('student_user', mySchema);
 
+
 // Routes to check server
 app.get('/', (req, res) => {
     res.send('Hello, World!');
@@ -77,6 +78,77 @@ app.post('/login', async (req, res) => {
         return res.status(500).json({ message: "Server error" });
     }
 });
+
+// Schema for Jobs
+const jobSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    company: { type: String, required: true },
+    location: { type: String, required: true },
+    salary: { type: String, required: true },
+    desciption: { type: String}
+});
+
+// Model for jobsdata collection
+const Job = mongoose.model('jobsdata', jobSchema);
+
+
+app.post('/createjobs',async(req,res)=>{
+    try {
+        const{title, company, location, salary, desciption}=req.body;
+        const newjob=new Job({title, company, location, salary, desciption})
+        const savejob=await newjob.save()
+        res.status(201).json(savejob);
+        res.status(201).json({ message: "Job created successfully" });
+    } catch (err) {
+        console.error("Error in creating job:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+    
+})
+
+app.get('/jobs', async(req,res)=>{
+    try {
+        const jobs=await Job.find()
+        res.json(jobs)
+    } catch (err) {
+        console.error("Error fetching jobs:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
+const InternSchema=new mongoose.Schema({
+    title:{type:String, required:true},
+    company:{type:String, required:true},
+    location:{type:String, required:true},
+    stipend:{type:String, required:true}
+})
+
+
+const Internship=new mongoose.model('interndatas',InternSchema);
+app.post('/createinternship',async(req,res)=>{
+    try {
+        const{title,company,location,stipend}=req.body;
+        const newinternship=await new Intern({title,company,location,stipend});
+        const saveinternship=newinternship.save();
+        res.status(201).json(saveinternship);
+        res.status(201).json({ message: "Job created successfully" });
+    } catch (err) {
+        console.error("Error in creating job:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+app.get('/internships', async(req,res)=>{
+    try {
+        const internship=await Internship.find()
+        res.json(internship)
+    } catch (err) {
+        console.error("Error fetching jobs:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
+
+
 
 // Server Listen
 const PORT = 3000;

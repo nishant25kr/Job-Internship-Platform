@@ -1,0 +1,123 @@
+body{
+    margin: 0;
+    min-width: 320px;
+    min-height: 110vh;
+  }
+
+  .home-vendor{
+    display: flex;
+    justify-content: center;
+    /* flex-direction: column; */
+    align-items: center;
+    height: 50vh;
+    /* background-color: aquamarine; */
+  }
+  
+  .home-sec .home-head{
+    font-size: 60px;
+    color: white;
+
+  }
+  
+  .home-sec{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+  }
+  
+  .search-box {
+    position: relative;
+  
+  }
+  
+  .search-box input {
+    padding: 8px 35px 8px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+  
+  }
+  
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: gray;
+    cursor: pointer;
+  }
+  
+  .mid-sec{
+    display: flex;
+    color: rgb(224, 225, 231);
+   
+  }
+  
+  .mid-side{
+    margin: 20px;
+    padding: 20px;
+    background-color: #17191f66;
+    border: 1px solid #6c677b80;
+    border-radius: 10px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 10px #6c677b80;
+  }
+  .mid-side:hover{
+    scale: 1.01;
+  }
+  
+  .mid-main{
+    /* background-color: antiquewhite; */
+    display: flex;
+    margin: 20px;
+    margin-right: 20px;
+    /* height: 150px; */
+  }
+  
+  .centered-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #6c677b80;
+    box-shadow: 0px 0px 10px #6c677b80;
+    border-radius: 10px;
+    margin-right: 10px;
+    background-color: #17191f66;
+    /* background-color: rgb(181, 117, 229); */
+    padding: 10px;
+  }
+  .centered-box:hover{
+    scale: 1.01;
+  }
+  
+  
+  .home-btn{
+    border: 1px solid #6c677b80;
+
+      padding: 10px 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      border-radius: 5px;
+      background: transparent;
+
+      color: white;
+  }
+  
+  .home-btn:hover{
+    background:#1a1825;
+    /* color: #000000; */
+  }
+  
+  .mid-side1{
+    display: flex;
+    justify-content: space-between;
+    padding: 50px;
+  }
