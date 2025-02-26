@@ -5,6 +5,7 @@ import Home from '../Component/Home/Home'
 import Navbar from '../Component/Navbar/Navbar'
 import Jobs from '../Component/Jobs/Jobs'
 import Internships from '../Component/Internships/Internships'
+import CreateJobs from '../Component/CreateJobs/CreateJobs'
 import { BrowserRouter, Router, Route, Routes } from 'react-router-dom'
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import './App.css'
@@ -21,6 +22,7 @@ export default function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/jobs' element={<Jobs />} />
           <Route path='/internships' element={<Internships />} />
+          <Route path='/createjobs' element={<CreateJobs />} />
         </Routes>
       </div>
       </BrowserRouter>

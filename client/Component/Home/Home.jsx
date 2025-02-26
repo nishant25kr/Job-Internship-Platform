@@ -43,7 +43,7 @@ export default function Home() {
             </section>
           </div>
         </div>
-        <h1>home</h1>
+
         <div className="mid-side">
           <h2>How It Works</h2>
           <p className="highlight-text">Getting started is easy</p>

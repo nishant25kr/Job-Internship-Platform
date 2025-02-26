@@ -81,24 +81,27 @@ app.post('/login', async (req, res) => {
 
 // Schema for Jobs
 const jobSchema = new mongoose.Schema({
+
     title: { type: String, required: true },
     company: { type: String, required: true },
     location: { type: String, required: true },
     salary: { type: String, required: true },
-    desciption: { type: String}
+    description: { type: String},
+    category: {type: String,required: true}
+
 });
 
 // Model for jobsdata collection
 const Job = mongoose.model('jobsdata', jobSchema);
 
-
 app.post('/createjobs',async(req,res)=>{
+
     try {
-        const{title, company, location, salary, desciption}=req.body;
-        const newjob=new Job({title, company, location, salary, desciption})
+        const{title, company, location, salary, description,category}=req.body;
+        const newjob=new Job({title, company, location, salary, description, category})
         const savejob=await newjob.save()
-        res.status(201).json(savejob);
-        res.status(201).json({ message: "Job created successfully" });
+        // res.status(201).json(savejob);
+        res.status(201).json({ message: "Job created successfully",savejob });
     } catch (err) {
         console.error("Error in creating job:", err);
         res.status(500).json({ error: "Internal server error" });
