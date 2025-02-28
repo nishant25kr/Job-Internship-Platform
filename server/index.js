@@ -5,9 +5,18 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// app.use(cors(
+//     {
+//         origin: ["https://deploy-mern-frontend.vercel.app"],
+//         methods: ["POST", "GET"],
+//         credentials: true
+//     }
+// ));
+const url='mongodb://127.0.0.1:27017/PEP'
+// const url='mongodb+srv://nishant927472:nishant25@pep-project.uso1b.mongodb.net/pep?retryWrites=true&w=majority&appName=pep-project'
 const connectDB = async () => {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/PEP', {
+        await mongoose.connect(url, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
