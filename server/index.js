@@ -12,6 +12,7 @@ app.use(cors());
 //         credentials: true
 //     }
 // ));
+
 const url='mongodb://127.0.0.1:27017/PEP'
 // const url='mongodb+srv://nishant927472:nishant25@pep-project.uso1b.mongodb.net/pep?retryWrites=true&w=majority&appName=pep-project'
 const connectDB = async () => {
@@ -132,23 +133,37 @@ const InternSchema=new mongoose.Schema({
     title:{type:String, required:true},
     company:{type:String, required:true},
     location:{type:String, required:true},
-    stipend:{type:String, required:true}
+    stipend:{type:String, required:true},
+    category: {type: String,required: true}
 })
 
+const Internship= new mongoose.model('interndatas',InternSchema);
+// app.post('/createinternship',async(req,res)=>{
+//     try {
+//         const{title,company,location,stipend}=req.body;
+//         const newinternship=await new Intern({title,company,location,stipend,category});
+//         const saveinternship=newinternship.save();
+//         res.status(201).json(saveinternship);
+//         res.status(201).json({ message: "Internship created successfully" });
+//     } catch (err) {
+//         console.error("Error in creating job:", err);
+//         res.status(500).json({ error: "Internal server error" });
+//     }
+// })
 
-const Internship=new mongoose.model('interndatas',InternSchema);
-app.post('/createinternship',async(req,res)=>{
+app.post('/createinternship', async (req, res) => {
     try {
-        const{title,company,location,stipend}=req.body;
-        const newinternship=await new Intern({title,company,location,stipend});
-        const saveinternship=newinternship.save();
-        res.status(201).json(saveinternship);
-        res.status(201).json({ message: "Job created successfully" });
+        const { title, company, location, stipend, category } = req.body; // Ensure category is included
+        const newinternship = new Internship({ title, company, location, stipend, category });
+        const saveinternship = await newinternship.save(); // Await save()
+
+        res.status(201).json({ message: "Internship created successfully", saveinternship });
     } catch (err) {
-        console.error("Error in creating job:", err);
+        console.error("Error in creating internship:", err);
         res.status(500).json({ error: "Internal server error" });
     }
-})
+});
+
 app.get('/internships', async(req,res)=>{
     try {
         const internship=await Internship.find()
@@ -158,9 +173,6 @@ app.get('/internships', async(req,res)=>{
         res.status(500).json({ error: "Internal server error" });
     }
 })
-
-
-
 
 // Server Listen
 const PORT = 3000;

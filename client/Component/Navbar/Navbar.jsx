@@ -48,7 +48,7 @@ export default function Navbar() {
                 <Link className="nav-item nav-link px-5 text-light" to="/">Home</Link>
                 <Link className="nav-item nav-link px-5 text-light" to="/jobs">Jobs</Link>
                 <Link className="nav-item nav-link px-5 text-light" to="/internships">Internships</Link>
-                <Link className="nav-item nav-link px-5 text-light " to="#">About Us</Link>
+                <Link className="nav-item nav-link px-5 text-light " to="/about">About Us</Link>
               </div>
             </div>
           </nav>

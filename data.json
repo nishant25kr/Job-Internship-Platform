@@ -155,15 +155,6 @@
   
 
 
-  db.jobsdatas.insertOne({
-    "title": "Sales Manager",
-    "company": "Nike",
-    "description": "Manage sales teams and drive revenue growth.",
-    "salary": 97000,
-    "location": "Paris, France",
-    "category": "Sales"
-  });
-  
 
 
-  nishant25
+
