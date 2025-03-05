@@ -138,18 +138,7 @@ const InternSchema=new mongoose.Schema({
 })
 
 const Internship= new mongoose.model('interndatas',InternSchema);
-// app.post('/createinternship',async(req,res)=>{
-//     try {
-//         const{title,company,location,stipend}=req.body;
-//         const newinternship=await new Intern({title,company,location,stipend,category});
-//         const saveinternship=newinternship.save();
-//         res.status(201).json(saveinternship);
-//         res.status(201).json({ message: "Internship created successfully" });
-//     } catch (err) {
-//         console.error("Error in creating job:", err);
-//         res.status(500).json({ error: "Internal server error" });
-//     }
-// })
+
 
 app.post('/createinternship', async (req, res) => {
     try {
@@ -173,6 +162,9 @@ app.get('/internships', async(req,res)=>{
         res.status(500).json({ error: "Internal server error" });
     }
 })
+
+
+
 
 // Server Listen
 const PORT = 3000;

@@ -62,6 +62,7 @@ export default function Navbar() {
         <div className="nav-buttons">
           <button className="login-btn" onClick={() => navigate("/login")}>LogIn/Signup</button>
         </div>
+        
       )}
     </nav>
   );

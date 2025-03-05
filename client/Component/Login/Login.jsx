@@ -8,71 +8,55 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     axios
-//       .post("http://localhost:3000/login", { email, password })
-//       .then(result => {
-//         console.log(result);
-//         if (result.data.status === "success") {  
-//           localStorage.setItem("user", JSON.stringify({ 
-//             id: result.data.id, 
-//             username: result.data.username 
-//           }));
-//           // setOnLoggedIn(true); 
-//           navigate('/jobs');
-//         } else {
-//           alert("Invalid credentials!");
-//         }
-//       })
-//       .catch((err) => console.log(err));
-// };
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  axios.post("http://localhost:3000/login", { email, password })
-    .then(result => {
-      console.log("Login Response:", result.data);
-      
-      if (result.data.status === "success") {  // FIXED: Check correct response key
-        localStorage.setItem("user", JSON.stringify({ id: result.data.id, username: result.data.username }));
-        navigate('/');  // Navigate after successful login
-        window.location.reload();  // Force navbar to update
-      } else {
-        alert("Invalid credentials!");
-      }
-    })
-    .catch(err => console.log("Login Error:", err));
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post("http://localhost:3000/login", { email, password })
+      .then(result => {
+        console.log("Login Response:", result.data);
+        if (result.data.status === "success") {  
+          localStorage.setItem("user", JSON.stringify({ id: result.data.id, username: result.data.username }));
+          navigate('/');
+          window.location.reload();
+        } else {
+          alert("Invalid credentials!");
+        }
+      })
+      .catch(err => console.log("Login Error:", err));
+  };
 
   return (
-    <div>
-      <div className='border w-25 mx-auto mt-5 p-3'>
-        <form onSubmit={handleSubmit} className='m-2'>
-          <h2>Login Page</h2>
+    <div className="login-container">
+      <div className="login-box">
+        <h2 className='text-light'>Welcome Back</h2>
+        <p>Login to access your account</p>
 
+        <form onSubmit={handleSubmit} className="login-form">
           <input
             type="email"
             name='email'
-            className='m-1 form-control'
-            placeholder='Email'
+            className='login-input'
+            placeholder='Enter your email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          /> <br />
+            required
+          />
 
           <input
             type="password"
             name='password'
-            className='m-1 form-control'
-            placeholder='Password'
+            className='login-input'
+            placeholder='Enter your password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          /> <br />
+            required
+          />
 
-          <input type="submit" value='Login' className='btn m-1 btn-primary' />
-          <Link to='/register' className='m-1 btn btn-secondary'>New User</Link>
-
+          <button type="submit" className="login-btn">Login</button>
         </form>
+
+        <p className="register-text">
+          New here? <Link to='/register' className='register-link'>Create an account</Link>
+        </p>
       </div>
     </div>
   );
