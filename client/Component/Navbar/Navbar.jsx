@@ -10,7 +10,6 @@ export default function Navbar() {
   const [name,setname]=useState("")
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     try {
       const user = localStorage.getItem("user");
@@ -24,7 +23,6 @@ export default function Navbar() {
       console.error("Error parsing localStorage user data:", error);
     }
   }, []);
-  
 
   const handleLogout = () => {
     localStorage.removeItem("user");  // Clear user session

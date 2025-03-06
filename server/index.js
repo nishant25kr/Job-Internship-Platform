@@ -142,9 +142,9 @@ const Internship= new mongoose.model('interndatas',InternSchema);
 
 app.post('/createinternship', async (req, res) => {
     try {
-        const { title, company, location, stipend, category } = req.body; // Ensure category is included
+        const { title, company, location, stipend, category } = req.body; 
         const newinternship = new Internship({ title, company, location, stipend, category });
-        const saveinternship = await newinternship.save(); // Await save()
+        const saveinternship = await newinternship.save(); 
 
         res.status(201).json({ message: "Internship created successfully", saveinternship });
     } catch (err) {
