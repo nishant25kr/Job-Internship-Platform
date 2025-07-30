@@ -5,63 +5,148 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 // import jwt from "jsonwebtoken"
 
-const registerUser = asyncHandler(async(req,res)=>{
-    
-    const {username, email, fullname, password} = req.body;
+const generateAccessandRefreshToken = async (userId) => {
+  try {
+    const user = await User.findById(userId);
 
-    if(username === ""){
-        throw new ApiError(400,"username is empty")
+    const accessToken = user.generateAccessToken();
+
+    const refreshToken = user.generateRefreshToken();
+
+    //typo user.refreshtoken->user.refreshToken
+    //it was not saving the refreshToken of user
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    return { accessToken, refreshToken };
+  } catch (err) {
+    throw new ApiError(
+      500,
+      "Something went wrong while generating refresh and access token"
+    );
+  }
+};
+
+const registerUser = asyncHandler(async (req, res) => {
+  const { username, email, fullname, password } = req.body;
+
+  if (username === "") {
+    throw new ApiError(400, "username is empty");
+  }
+  if (email === "") {
+    throw new ApiError(400, "username is empty");
+  }
+  if (fullname === "") {
+    throw new ApiError(400, "username is empty");
+  }
+  if (password === "") {
+    throw new ApiError(400, "username is empty");
+  }
+
+  const existUser = await User.findOne({
+    $or: [{ username }, { email }],
+  });
+
+  // console.log(existUser)
+
+  if (existUser) {
+    throw new ApiError(404, "User already exist jnjn");
+  }
+
+  const user = await User.create({
+    username: username,
+    email,
+    fullname,
+    password,
+  });
+
+  const usercreate = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  if (!usercreate) {
+    throw new ApiError(500, "Something went wrong while registring the user");
+  }
+
+  return res
+    .status(201)
+    .json(new ApiResponse(200, user, "User created successfully"));
+});
+
+const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  if (email === "") throw new ApiError(401, "Email cannot be empty");
+
+  if (password === "") throw new ApiError(401, "Password cannot be empty");
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new ApiError(400, "User not available");
+  }
+
+  const passwordcheck = await User.isPasswordCorrect(password);
+
+  if (!passwordcheck) {
+    throw new ApiError(400, "Password is incorrect");
+  }
+
+  const { accessToken, refreshToken } = await generateAccessandRefreshToken(
+    user._id
+  );
+
+  const LoggedInUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  const option = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, option)
+    .cookie("refreshToken", refreshToken, option)
+    .json(
+    new ApiResponse(
+        200,
+        { LoggedInUser, accessToken, refreshToken },
+        "User login successfull"
+      )
+    )
+});
+
+const logoutUser = asyncHandler(async (req, res) => {
+    if (!req.user || !req.user._id) {
+        throw new ApiError(401, "Unauthorized access");
     }
-    if(email === ""){
-        throw new ApiError(400,"username is empty")
-    }
-    if(fullname === ""){
-        throw new ApiError(400,"username is empty")
-    }
-    if(password === ""){
-        throw new ApiError(400,"username is empty")
-    }
 
-    const existUser = await User.findOne({
-        $or:[{username},{email}]
-    })
-
-    // console.log(existUser)
-
-    if(existUser){
-        throw new ApiError(404,"User already exist jnjn");
-    }
-
-    const user = await User.create({
-        username : username,
-        email,
-        fullname,
-        password
-
-    })
-
-    const usercreate = await User.findById(user._id).select(
-        "-password -refreshToken"
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $unset: { refreshToken: "" }
+        },
+        { new: true }
     );
 
-    if(!usercreate){
-        throw new ApiError(500, "Something went wrong while registring the user");
-    }
+    const option = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
+    };
 
-    return res.status(201).json(
-        new ApiResponse(
-            200,
-            user,
-            "User created successfully"
-        )
-    )
-
-
-
-})
+    return res
+        .status(200)
+        .clearCookie("accessToken", option)
+        .clearCookie("refreshToken", option)
+        .json(new ApiResponse(200, {}, "User logged out successfully"));
+});
 
 
-
-export{
-    registerUser
-}
+export { 
+    registerUser,
+    loginUser,
+    logoutUser
+};
