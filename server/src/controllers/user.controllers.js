@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { User } from "../models/User.models.js";
+import  User  from "../models/User.models.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -86,7 +86,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User not available");
   }
 
-  const passwordcheck = await User.isPasswordCorrect(password);
+  const passwordcheck = await user.isPasswordCorrect(password);
 
   if (!passwordcheck) {
     throw new ApiError(400, "Password is incorrect");
@@ -144,7 +144,6 @@ const logoutUser = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "User logged out successfully"));
 });
 
-
 const refreshAccessToken = asyncHandler(async(req,res) =>{
     //console.log("in refreshaccesstoken");
     //replace refreshToken -> refreshToken
@@ -196,10 +195,35 @@ const refreshAccessToken = asyncHandler(async(req,res) =>{
 
 })
 
+const changePassword = asyncHandler(async(req,res)=>{
+    const {oldpassword, newpassword, confpassword} = req.body;
 
+    if(newpassword === "") throw new ApiError(400,"New Password cannot be empty");
+    if(oldpassword === "") throw new ApiError(400,"Old Password cannot be empty");
+    if(confpassword === "") throw new ApiError(400,"confirm Password cannot be empty");
+
+    if(newpassword !== confpassword){
+        throw new ApiError(400,"New password and confirm password are not matching")
+    }
+
+    const user = await User.findById(req?.user._id);
+
+    const ispasswordCorrect = await user.isPasswordCorrect(oldpassword)
+
+    if(!ispasswordCorrect) throw new ApiError(400,"Password is incorrect")
+
+    user.password = newpassword;
+
+    user.save();
+
+    return res.status(200)
+    .json(new ApiResponse(200,{},"Password changed successful"))
+
+})
 
 export { 
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    refreshAccessToken
 };
