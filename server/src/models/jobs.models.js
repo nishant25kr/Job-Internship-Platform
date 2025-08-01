@@ -1,38 +1,68 @@
 import mongoose from "mongoose";
 
-const jobSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:[true,"JobName is required"]
+const jobSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Job name is required"]
     },
-    title:{
-        type:String,
-        required:[true,"JobTitle is required"]
+    title: {
+      type: String,
+      required: [true, "Job title is required"]
     },
-    description:{
-        type:String,
-        required:true
+    description: {
+      type: String,
+      required: [true, "Description is required"]
     },
-    Type:{
-        type:String,
-        required:true,
-        enum:["Remote","Onsite"]
+    Type: {
+      type: String,
+      required: true,
+      enum: ["Remote", "Onsite", "Hybrid"]
     },
-    place:{
-        type:String,
-        required:true,
+    employmentType: {
+      type: String,
+      required: true,
+      enum: ["Full-time", "Part-time", "Contract", "Internship"]
     },
-    salary:{
-        type:Number,
-        required:true
+    experienceLevel: {
+      type: String,
+      enum: ["Internship", "Entry", "Mid", "Senior"],
+      default: "Entry"
     },
-    owner:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Company"
+    place: {
+      type: String,
+      required: true
+    },
+    salary: {
+      type: Number,
+      required: true
+    },
+    skills: {
+      type: [String],
+      default: []
+    },
+    deadline: {
+      type: Date,
+    //   required: true
+    },
+    isOpen: {
+      type: Boolean,
+      default: true
+    },
+    applyLink: {
+      type: String
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+      required: true
+    },
+    companySnapshot: {
+      name: String,
+      logo: String
     }
+  },
+  { timestamps: true }
+);
 
-
-
-},{timestamps:true})
-
-export const Job = mongoose.model("Job",jobSchema);
+export default mongoose.model("Job", jobSchema);
