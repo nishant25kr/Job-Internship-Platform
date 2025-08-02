@@ -111,17 +111,21 @@ const loginCompany = asyncHandler(async (req,res) => {
 
 const logoutCompany = asyncHandler(async(req,res)=>{
 
-    if(!req.user || !req.user._id){
+    if(!req.company || !req.company._id){
         throw new ApiError(400,"Unauthorized access")
     }
 
     const company = await Company.findByIdAndUpdate(
-        req.user._id,
+        req.company._id,
         {
             $unset:{refreshToken: ""}
         },
         { new: true }
     )
+
+    if(!company){
+      throw new ApiError(400,"Not able to find company")
+    }
 
     const option = {
         httpOnly: true,
@@ -137,7 +141,7 @@ const logoutCompany = asyncHandler(async(req,res)=>{
 })
 
 const currentCompany = asyncHandler(async (req,res) => {
-  if (!req.user) {
+  if (!req.company) {
     throw new ApiError(400, "No Company is logged in");
   }
   return res.status(200).json({

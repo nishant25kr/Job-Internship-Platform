@@ -50,7 +50,7 @@ export const verifyCompanyJWT = asyncHandler(async (req,res,next)=>{
             throw ApiError(401,"Company not found, Invalid accesstoken");
         }
 
-        req.user = company
+        req.company = company
         next()
 
     } catch (error) {
