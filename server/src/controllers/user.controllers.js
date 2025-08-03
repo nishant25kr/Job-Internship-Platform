@@ -240,7 +240,7 @@ const updateUserDetail = asyncHandler(async (req, res) => {
       email: newemail,
       fullname: newfullname,
     },
-  }).select("-password");
+  }).select("-password -refreshToken");
 
   return res.status(200).json(new ApiResponse(200, user, "Account Updated"));
 });

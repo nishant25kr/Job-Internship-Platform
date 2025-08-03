@@ -3,7 +3,8 @@ import {
     registerCompany,
     loginCompany,
     logoutCompany,
-    currentCompany
+    currentCompany,
+    updateCompanyDetail
 } from "../controllers/company.controllers.js"
 import { verifyCompanyJWT } from "../middlewares/auth.middleware.js";
 
@@ -14,6 +15,7 @@ router.route("/register").post(registerCompany);
 router.route("/login").post(loginCompany);
 router.route("/logout").post(verifyCompanyJWT,logoutCompany);
 router.route("/current-company").get(verifyCompanyJWT,currentCompany);
+router.route("/update-company").post(verifyCompanyJWT,updateCompanyDetail);
 
 
 export default router;

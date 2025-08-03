@@ -23,7 +23,7 @@ const generateAccessandRefreshToken = async (userId) => {
   }
 };
 
-const registerCompany = asyncHandler(async (req,res) => {
+const registerCompany = asyncHandler(async (req, res) => {
   const { name, email, phone, password } = req.body;
 
   if (name === "") {
@@ -69,19 +69,19 @@ const registerCompany = asyncHandler(async (req,res) => {
     );
 });
 
-const loginCompany = asyncHandler(async (req,res) => {
+const loginCompany = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   if (email === "") throw new ApiError(400, "Email is empty");
   if (password === "") throw new ApiError(400, "password is empty");
 
-  const company = await Company.findOne({email});
+  const company = await Company.findOne({ email });
 
   if (!company) {
     throw new ApiError(400, "Company is not registered");
   }
 
-  const passwordcheck = await company.isPasswordCorrect(password)
+  const passwordcheck = await company.isPasswordCorrect(password);
 
   if (!passwordcheck) {
     throw new ApiError(400, "Password is incorrect");
@@ -109,38 +109,37 @@ const loginCompany = asyncHandler(async (req,res) => {
     );
 });
 
-const logoutCompany = asyncHandler(async(req,res)=>{
+const logoutCompany = asyncHandler(async (req, res) => {
+  if (!req.company || !req.company._id) {
+    throw new ApiError(400, "Unauthorized access");
+  }
 
-    if(!req.company || !req.company._id){
-        throw new ApiError(400,"Unauthorized access")
-    }
+  const company = await Company.findByIdAndUpdate(
+    req.company._id,
+    {
+      $unset: { refreshToken: "" },
+    },
+    { new: true }
+  );
 
-    const company = await Company.findByIdAndUpdate(
-        req.company._id,
-        {
-            $unset:{refreshToken: ""}
-        },
-        { new: true }
-    )
+  if (!company) {
+    throw new ApiError(400, "Not able to find company");
+  }
 
-    if(!company){
-      throw new ApiError(400,"Not able to find company")
-    }
+  const option = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  };
 
-    const option = {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
-    };
+  return res
+    .status(200)
+    .clearCookie("accessToken", option)
+    .clearCookie("refreshToken", option)
+    .json(new ApiResponse(200, {}, "Company logged out"));
+});
 
-    return res.status(200)
-    .clearCookie("accessToken",option)
-    .clearCookie("refreshToken",option)
-    .json(new ApiResponse(200,{},"Company logged out"))
-
-})
-
-const currentCompany = asyncHandler(async (req,res) => {
+const currentCompany = asyncHandler(async (req, res) => {
   if (!req.company) {
     throw new ApiError(400, "No Company is logged in");
   }
@@ -151,9 +150,39 @@ const currentCompany = asyncHandler(async (req,res) => {
   });
 });
 
-export { 
-    registerCompany,
-    loginCompany,
-    logoutCompany,
-    currentCompany
+const updateCompanyDetail = asyncHandler(async (req, res) => {
+  const { newName, newEmail, newPhone } = req.body;
+
+  if (!newName || !newEmail || !newPhone) {
+    throw new ApiError(400, "Name or Email or Phone is empty");
+  }
+
+  const updatedDetailsCompany = await Company.findByIdAndUpdate(
+    req.company._id,
+    {
+      $set: {
+        name: newName,
+        email: newEmail,
+        phone: newPhone,
+      },
+    }
+  ).select(
+    "-password -refreshToken"
+  )
+
+  if (!updatedDetailsCompany) {
+    throw new ApiError(400, "Error while updating details");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedDetailsCompany, "Details updated successfully"));
+});
+
+export {
+  registerCompany,
+  loginCompany,
+  logoutCompany,
+  currentCompany,
+  updateCompanyDetail,
 };
