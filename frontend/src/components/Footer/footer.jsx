@@ -1,7 +1,7 @@
 export default function Footer(){
     return(
         <div>
-            <h1>This is navbar</h1>
+            <h1>This is footer</h1>
         </div>
     )
 }
