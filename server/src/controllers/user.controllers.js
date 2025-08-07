@@ -99,9 +99,12 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   const option = {
-    httpOnly: true,
-    secure: true,
-  };
+  httpOnly: true,
+  secure: false, // true in production (https)
+  sameSite: "Lax", // or "None" if using cross-origin (AND secure: true)
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 1 day
+};
+
 
   return res
     .status(200)
@@ -249,6 +252,8 @@ const currentUser = asyncHandler(async (req, res) => {
   if (!req.user) {
     throw new ApiError(400, "No User is logged in");
   }
+  // console.log("Cookies received:", req.cookies);
+
   return res.status(200).json({
     statusCode: 200,
     data: req.user,

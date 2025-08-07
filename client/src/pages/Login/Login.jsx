@@ -13,7 +13,7 @@ export default function Login() {
     axios.post("http://localhost:3000/login", { email, password })
       .then(result => {
         console.log("Login Response:", result.data);
-        if (result.data.status === "success") {  
+        if (result.data.status === "success") {
           localStorage.setItem("user", JSON.stringify({ id: result.data.id, username: result.data.username }));
           navigate('/');
           window.location.reload();
