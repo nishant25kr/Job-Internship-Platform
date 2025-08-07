@@ -1,45 +1,76 @@
-import React, { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
-
+import React, { useState } from "react";
+import { useAuth } from "../hooks/AuthProvider";
 
 export default function Login() {
-    const [email, setEmail] = useState("two@gmail.com")
-    const [password, setPassword] = useState("two@123456")
-    const navigate = useNavigate()
+  const [email, setEmail] = useState("two@gmail.com");
+  const [password, setPassword] = useState("two@123456");
+  const [errorMsg, setErrorMsg] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(email, password);
+  const auth = useAuth();
 
-        axios
-            .post("http://localhost:8000/api/users/login", { email, password }, {
-                withCredentials: true,
-            })
-            .then((response) => {
+  const handleSubmitEvent = async (e) => {
+    e.preventDefault();
+    if (email.trim() && password.trim()) {
+      try {
+        await auth.loginAction({ email, password });
+      } catch (err) {
+        setErrorMsg(err.message || "Login failed.");
+      }
+    } else {
+      setErrorMsg("Please provide valid email and password.");
+    }
+  };
 
-                if (response.data.success) {
-                    localStorage.setItem(
-                        "user",
-                        JSON.stringify(response.data.data.LoggedInUser)
-                    );
-                    navigate("/");
-                } else {
-                    alert("Invalid credentials");
-                }
-            })
-            .catch((error) => {
-                console.log("Error", error.message);
-            });
-    };
+  return (
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="w-full max-w-sm p-6 bg-white shadow-md rounded-md">
+        <h2 className="text-2xl font-semibold text-center mb-4">Login</h2>
 
+        {errorMsg && (
+          <div className="text-red-500 text-sm mb-3 text-center">
+            {errorMsg}
+          </div>
+        )}
 
-    return (
-        <div>
-            <form action="" onSubmit={handleSubmit}>
-                <button type="submit" className="border">Login</button>
-            </form>
-        </div>
-    )
+        <form onSubmit={handleSubmitEvent}>
+          <div className="mb-4">
+            <label htmlFor="user-email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              id="user-email"
+              name="email"
+              placeholder="you@example.com"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }
-

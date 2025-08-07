@@ -1,9 +1,12 @@
 import axios from "axios"
 import { AnimatedTestimonialsDemo } from "./AnimatedTestimonialsDemo"
 import { useEffect } from "react"
+import { useAuth } from "../../hooks/AuthProvider";
+
 
 
 export default function Home() {
+  const auth = useAuth()
 
   const handlesubmit = () => {
     axios
@@ -31,12 +34,17 @@ export default function Home() {
 
   },[])
 
+  const handleLogoutsubmit = async () =>{
+    await auth.logOut()
+  }
+
 
   return (
     <div>
       <h1>This is Home</h1>
       <div className="border">
-        <AnimatedTestimonialsDemo />
+        {/* <AnimatedTestimonialsDemo /> */}
+        <button onClick={handleLogoutsubmit}>Logout</button>
 
       </div>
       <button onClick={handlesubmit}>getUser</button>
