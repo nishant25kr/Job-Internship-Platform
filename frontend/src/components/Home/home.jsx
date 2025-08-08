@@ -1,7 +1,6 @@
 import axios from "axios"
 import { AnimatedTestimonialsDemo } from "./AnimatedTestimonialsDemo"
 import { useEffect } from "react"
-import { useAuth } from "../../hooks/AuthProvider";
 
 
 
@@ -23,17 +22,6 @@ export default function Home() {
 
   }
 
-  useEffect(()=>{
-    const User = JSON.parse(localStorage.getItem("user"));
-    if(User){
-      console.log(User)
-    }
-    else{
-      console.log("user not found")
-    }
-
-  },[])
-
   const handleLogoutsubmit = async () =>{
     await auth.logOut()
   }
@@ -42,12 +30,10 @@ export default function Home() {
   return (
     <div>
       <h1>This is Home</h1>
-      <div className="border">
+      <div className="">
         {/* <AnimatedTestimonialsDemo /> */}
-        <button onClick={handleLogoutsubmit}>Logout</button>
 
       </div>
-      <button onClick={handlesubmit}>getUser</button>
     </div>
   );
 }
