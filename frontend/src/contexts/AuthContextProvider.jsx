@@ -14,40 +14,46 @@ const AuthContextProvider = ({ children }) => {
         htmlEl.classList.add(theme);
     }, [theme]);
 
-
     const Login = async ({ email, password }) => {
-        console.log(email, password)
-        try {
-            const response = axios.post("http://localhost:3000/login", {
-                email,
-                password
-            });
-            console.log(response)
-            if (response.data.success === "success") {
-                const loggedInUser = {
-                    name: response.data.data.LoggedInUser.name,
-                    username: response.data.data.LoggedInUser.username,
-                    email: response.data.data.LoggedInUser.email,
-                };
-
-                localStorage.setItem("user", JSON.stringify(loggedInUser));
-                setUser(loggedInUser);
-                navigate('/');
-            } else {
-                alert("Invalid credentials!");
-            }
-        } catch (error) {
-            console.error("Login error:", error);
-        }
+        axios.post(
+            "http://localhost:8000/api/users/login",
+            { email, password },
+            { withCredentials: true }
+        )
+            .then((response) => {
+                if (response.data.success) {
+                    const loggedInUser = {
+                        name: response.data.data.LoggedInUser.fullname,
+                        username: response.data.data.LoggedInUser.username,
+                        email: response.data.data.LoggedInUser.email,
+                    };
+                    localStorage.setItem("user", JSON.stringify(loggedInUser));
+                    setUser(loggedInUser);
+                    navigate('/');
+                } else {
+                    alert("Invalid credentials!");
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     };
 
-    const Logout = () => {
-        localStorage.removeItem("user");
-        setUser(null);
+    const Logout = async () => {
+        axios
+            .post("http://localhost:8000/api/users/logout", {}, { withCredentials: true })
+            .then((response) => {
+                localStorage.removeItem("user");
+                setUser(null);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     };
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
+        // console.log(storedUser)
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         } else {

@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 const app = express();
 
 app.get('/', (req, res) => {
-  // res.send("hello")
   res.send(`Hello this is backend from job board`)
 })
 

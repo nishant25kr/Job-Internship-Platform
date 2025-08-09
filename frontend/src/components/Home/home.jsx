@@ -5,7 +5,6 @@ import { useEffect } from "react"
 
 
 export default function Home() {
-  const auth = useAuth()
 
   const handlesubmit = () => {
     axios

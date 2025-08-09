@@ -99,11 +99,11 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   const option = {
-  httpOnly: true,
-  secure: false, // true in production (https)
-  sameSite: "Lax", // or "None" if using cross-origin (AND secure: true)
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 1 day
-};
+    httpOnly: true,
+    secure: true, 
+    sameSite: "none", 
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 1 day
+  };
 
 
   return res
@@ -134,8 +134,8 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const option = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: true,
+    sameSite: "none",
   };
 
   return res
