@@ -2,8 +2,6 @@ import axios from "axios"
 import { AnimatedTestimonialsDemo } from "./AnimatedTestimonialsDemo"
 import { useEffect } from "react"
 
-
-
 export default function Home() {
 
   const handlesubmit = () => {
