@@ -5,30 +5,39 @@ import Footer from "./components/Footer/footer";
 import Home from "./components/Home/home";
 import About from "./pages/About/about";
 import Login from "./pages/Login";
-import AuthContextProvider from "./contexts/AuthContextProvider";
 import './App.css'
+import { useSelector } from "react-redux";
+import Loading from "./components/Loading";
+
+
 
 function App() {
+  const { loading } = useSelector((state) => state.auth);
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-50">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <BrowserRouter>
-      <AuthContextProvider>
-        <div className="min-h-screen flex flex-col justify-between">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              {/* <Route element={<PrivateRoute />}> */}
-                {/* <Route path="/home" element={<Home />} /> */}
-              {/* </Route> */}
-              <Route path="/about" element={<About />} />
-              <Route path="/" element={<Home/>} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </AuthContextProvider>
+      <div className="min-h-screen flex flex-col justify-between">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }
+
 
 export default App;

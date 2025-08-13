@@ -1,17 +1,34 @@
 import React, { useContext, useState } from "react"
-import AuthContext from "../../contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
 import ThemeToggler from "../../components/ui/ThemeToggler"
+import { useDispatch, useSelector } from "react-redux"
+import store from "../../app/store"
+import { logout } from "../../features/AuthSlice"
+import axios from "axios"
+
 
 export default function Navbar() {
-    const { user, Logout } = useContext(AuthContext)
-    const [mobileOpen, setmobileOpen] = useState(false)
+    const dispatch = useDispatch()
+    const {user} = useSelector( (state)=> state.auth)
     const navigate = useNavigate()
 
     const LoginClicked = () => {
         navigate('/login')
     }
 
+    const logoutHandler=()=>{
+        axios
+            .post("http://localhost:8000/api/users/logout", {}, { withCredentials: true })
+            .then((response) => {
+                if(response.data.success){
+                    dispatch(logout())
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        
+    }
 
     return (
         <div className="flex flex-wrap items-center justify-around w-full  ">
@@ -21,7 +38,7 @@ export default function Navbar() {
 
                     <button
                         className="px-4 py-2 mx-4 my-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                        onClick={Logout}
+                        onClick={logoutHandler}
                     >Logout</button>
                 ) : (
                     <>
