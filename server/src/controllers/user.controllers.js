@@ -102,7 +102,6 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: false, // false for local dev
     sameSite: "lax", // lax works better locally
-    maxAge: 7 * 24 * 60 * 60 * 1000,
   };
 
 
