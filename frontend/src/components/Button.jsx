@@ -6,13 +6,13 @@ function Button({
     ...props
 }) {
     return (
-        <button 
+        <button
             type={type}
             disabled={disabled}
             className={`
-                group relative inline-flex items-center justify-center px-7 py-2
-                bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700
-                hover:from-purple-700 hover:via-blue-700 hover:to-indigo-800
+                group relative inline-flex items-center justify-center mt-4 px-7 py-2
+                bg-gradient-to-r from-slate-800 via-purple-900 to-indigo-900
+                hover:from-slate-800 hover:via-purple-800 hover:to-indigo-800
                 text-white font-semibold text-base rounded-2xl
                 transition-all duration-300 ease-out transform
                 hover:scale-105 hover:-translate-y-0.5
@@ -29,7 +29,7 @@ function Button({
         >
             {/* Shimmer effect */}
             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
-            
+
             {/* Content */}
             <span className="relative z-10 flex items-center gap-2">
                 {children}

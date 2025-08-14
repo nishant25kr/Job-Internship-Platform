@@ -32,37 +32,57 @@ export default function Navbar() {
     }
 
     return (
-        <div className="flex flex-wrap items-center justify-around w-full  ">
-            <h1 className="text-4xl">Logo</h1>
-            <div>
+        <div className="flex items-center justify-between w-full px-6 py-4 backdrop-blur-md ">
+            {/* Logo Section */}
+            <div className="flex items-center space-x-3">
+                <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-800 to-gray-600 bg-clip-text text-transparent">
+                    JobPortal
+                </h1>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex items-center space-x-3">
                 {user ? (
-                    <Button
-                        type="submit"
-                        onClick={logoutHandler}
-                    >
-                        Logout
-                    </Button>
-                ) : (
-                    <>
+                    <div className="flex items-center space-x-4">
+                        {/* User Info */}
+                        <div className="hidden md:flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-gradient-to-r from-slate-900 via-purple-900 to-indigo-900 rounded-full flex items-center justify-center">
+                                <span className="text-white font-semibold text-sm">
+                                    {user ? user.username.charAt(0).toUpperCase() : 'U'}
+                                </span>
+                            </div>
+                            <div className="hidden lg:block">
+                                <p className="text-sm font-medium text-gray-900">Welcome back!</p>
+                                <p className="text-xs text-gray-500">{user.username || 'User'}</p>
+                            </div>
+                        </div>
+
+                        {/* Logout Button */}
                         <Button
-                        t   ype="submit"
+                            type="button"
+                            onClick={logoutHandler}
+                        >
+                            Logout
+                        </Button>
+                    </div>
+                ) : (
+                    <div className="flex items-center space-x-3">
+                        <Button
+                            type="button"
                             onClick={LoginClicked}
-                            className="m-3"
                         >
                             Login
                         </Button>
                         <Button
-                            type="submit"
-                            onClick={LoginClicked}
-                            className="m-3"
+                            type="button"
+                            onClick={LoginClicked} // Fixed: should be different from LoginClicked
                         >
-                            SignUp
+                            Sign Up
                         </Button>
-                    </>
+                    </div>
                 )}
-                {/* <ThemeToggler/> */}
-
             </div>
         </div>
+
     )
 }

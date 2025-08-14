@@ -10,11 +10,13 @@ export default function Login() {
   const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { error } = useSelector((state) => state.auth)
 
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // error=''
     dispatch(loginStart());
 
     axios
@@ -44,22 +46,21 @@ export default function Login() {
 
 
   return (
-    <div className="flex items-center min-h-[90vh] max-h-screen bg-gray-50">
+    <div className="flex items-center min-h-[90vh] max-h-screen ">
       {/* Left Side - Image/Content Section */}
-      <div className="hidden lg:flex lg:w-1/2 xl:w-1/2 h-[90vh] bg-white items-center justify-center relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100"></div>
+      <div className="hidden lg:flex lg:w-1/2 xl:w-1/2 h-[90vh]  items-center justify-center relative overflow-hidden">
 
         {/* Content Container */}
         <div className="relative z-10 text-center px-12 max-w-lg">
           {/* Logo/Icon */}
           <div className="mb-8">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl">
+            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-slate-800 via-purple-900 to-indigo-900 rounded-2xl flex items-center justify-center shadow-xl">
               <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
           </div>
+
 
           {/* Welcome Text */}
           <h1 className="text-4xl xl:text-5xl font-bold text-gray-800 mb-6 leading-tight">
@@ -71,7 +72,7 @@ export default function Login() {
 
           {/* Features List */}
           <div className="space-y-4 text-left">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center  space-x-3">
               <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
               <span className="text-gray-700">Secure & Private</span>
             </div>
@@ -86,10 +87,8 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Decorative Elements */}
-        <div className="absolute top-10 left-10 w-20 h-20 border border-gray-200 rounded-full opacity-50"></div>
-        <div className="absolute bottom-10 right-10 w-32 h-32 border border-gray-200 rounded-full opacity-30"></div>
-        <div className="absolute top-1/2 right-20 w-4 h-4 bg-purple-300 rounded-full opacity-60"></div>
+
+
       </div>
 
       {/* Right Side - Login Form */}
@@ -153,7 +152,7 @@ export default function Login() {
 
             <Button
               type="submit"
-              className="w-full py-3 text-lg font-semibold"
+              className="w-full "
             >
               Sign In
             </Button>

@@ -1,3 +1,5 @@
 #root {
   text-align: center;
-}
+  background: linear-gradient(135deg, #ffffff, #f8fafc, #e2e8f0);
+  color: black;
+} 
