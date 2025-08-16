@@ -13,6 +13,7 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+
         loginStart: (state) => {
             state.loading = true;
             state.error = null;
@@ -24,9 +25,7 @@ export const authSlice = createSlice({
             state.isAuthenticated = true;
             state.loading = false;
             state.lastLogin = new Date().toISOString();
-
             localStorage.setItem("User", JSON.stringify(state));
-
         },
         loginFailure: (state, action) => {
             state.loading = false,

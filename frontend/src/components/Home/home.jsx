@@ -6,24 +6,22 @@ import Button from "../Button";
 
 export default function Home() {
 
-  const { user } = useSelector((state)=>state.auth)
-  
+  const { theme } = useSelector((state) => state.theme)
+
   return (
     <div>
-      <h1>This is Home</h1>
       <div className="">
-        {user && <>Welocome "{user.username}"</>}
         {/* <AnimatedTestimonialsDemo /> */}
-        <div>
-        <Button
-          type="submit"
-          className=""
-          bgColor="bg-black"
+        <div
+          className={`min-h-[70vh] border 
+        ${theme == 'dark' ? "bg-gradient-to-b from-black via-gray-800 via-gray-600 via-gray-800 to-black"
+              :
+              "bg-gradient-to-b from-white via-gray-200 via-gray-200 via-gray-200 to-white"
+            }
+        `}
         >
-          Login
-        </Button>
-
-        
+          
+          {theme}
 
         </div>
 

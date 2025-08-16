@@ -12,7 +12,8 @@ import Loading from "./components/Loading";
 
 
 function App() {
-  const { loading } = useSelector((state) => state.auth);
+  const { loading,theme } = useSelector((state) => state.auth);
+  
 
   if (loading) {
     return (
@@ -24,7 +25,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col justify-between">
+      <div className="min-h-screen flex flex-col justify-between ">
         <Navbar />
         <main className="flex-grow">
           <Routes>

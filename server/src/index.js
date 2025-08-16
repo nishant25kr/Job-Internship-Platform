@@ -13,3 +13,20 @@ connectDB1()
 .catch((error)=>{
     console.log("DB connection failed: ",error)
 })
+
+
+// import dotenv from "dotenv";
+// dotenv.config();
+
+// import connectDB1 from "./db/db.js";
+// import { app } from "./app.js";
+
+// await connectDB1().catch((error) => {
+//   console.error("DB connection failed:", error);
+// });
+
+// app.get("/", (req, res) => {
+//   res.send("Hello from Vercel Root!");
+// });
+
+// export default app;
