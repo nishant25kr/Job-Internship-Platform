@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import ThemeToggler from "../../components/ui/ThemeToggler"
 import { useDispatch, useSelector } from "react-redux"
-import { logout } from "../../features/AuthSlice"
+import { logoutStart, logoutSucess } from "../../features/AuthSlice"
 import axios from "axios"
 import Button from "../Button"
 import ThemeToggle from "../ThemeSwitcher"
@@ -19,7 +19,7 @@ export default function Navbar() {
     }
 
     const logoutHandler = () => {
-
+        dispatch(logoutStart())
         axios
             .post(
                 `${import.meta.env.VITE_BACKEND_URL}/api/users/logout`,
@@ -27,7 +27,9 @@ export default function Navbar() {
                 { withCredentials: true })
             .then((response) => {
                 if (response.data.success) {
-                    dispatch(logout())
+                    dispatch(logoutSucess())
+                    console.log("hi")
+                    
                 }
             })
             .catch((error) => {

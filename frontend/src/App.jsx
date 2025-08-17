@@ -12,14 +12,18 @@ import Loading from "./components/Loading";
 
 
 function App() {
-  const { loading,theme } = useSelector((state) => state.auth);
-  
+  const { loading, theme } = useSelector((state) => state.auth);
+
 
   if (loading) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-50">
+      <div className={`fixed inset-0 flex items-center justify-center backdrop-blur-md z-50 ${theme === 'light'
+          ? 'bg-white/40'
+          : 'bg-black/40'
+        }`}>
         <Loading />
       </div>
+
     );
   }
 
