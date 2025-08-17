@@ -100,7 +100,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const option = {
     httpOnly: true,
-    secure: false, // false for local dev
+    secure: true, // false for local dev
     sameSite: "lax", // lax works better locally
   };
 
@@ -133,7 +133,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const option = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // true only in prod
+    secure: true, // true only in prod
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   };
 

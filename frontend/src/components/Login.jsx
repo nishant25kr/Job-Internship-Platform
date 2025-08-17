@@ -7,6 +7,7 @@ import Input from "./Inputt";
 import Button from "./Button";
 
 export default function Login() {
+   
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,12 +47,12 @@ export default function Login() {
     setErrors({});
 
     try {
+      console.log(import.meta.env.VITE_BACKEND_URL)
       const response = await axios.post(
-        "http://localhost:8000/api/users/login",
+        `http://localhost:8000/api/users/login`,
         { email, password },
         { withCredentials: true }
       );
-
       if (response.data.success) {
         const userOb = response.data.data.LoggedInUser;
         dispatch(loginSuccess({

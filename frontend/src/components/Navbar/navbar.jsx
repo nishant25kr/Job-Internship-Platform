@@ -19,8 +19,12 @@ export default function Navbar() {
     }
 
     const logoutHandler = () => {
+
         axios
-            .post("http://localhost:8000/api/users/logout", {}, { withCredentials: true })
+            .post(
+                `http://localhost:8000/api/users/logout`,
+                {},
+                { withCredentials: true })
             .then((response) => {
                 if (response.data.success) {
                     dispatch(logout())
@@ -28,8 +32,7 @@ export default function Navbar() {
             })
             .catch((error) => {
                 console.error("Error:", error);
-            });
-
+            })
     }
 
     return (
