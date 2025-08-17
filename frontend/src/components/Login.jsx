@@ -49,7 +49,7 @@ export default function Login() {
     try {
       console.log(import.meta.env.VITE_BACKEND_URL)
       const response = await axios.post(
-        `http://localhost:8000/api/users/login`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/login`,
         { email, password },
         { withCredentials: true }
       );

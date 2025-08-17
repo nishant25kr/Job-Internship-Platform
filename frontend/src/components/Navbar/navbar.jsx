@@ -22,7 +22,7 @@ export default function Navbar() {
 
         axios
             .post(
-                `http://localhost:8000/api/users/logout`,
+                `${import.meta.env.VITE_BACKEND_URL}/api/users/logout`,
                 {},
                 { withCredentials: true })
             .then((response) => {
