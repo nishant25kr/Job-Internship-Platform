@@ -36,7 +36,16 @@ export default function Navbar() {
     }
 
     return (
-        <section className="border-2 m-3 border-gray-700 rounded-4xl">
+        <section 
+        className = {`border-2 m-3 
+         rounded-3xl
+        ${theme === "dark"
+                        ? "border-gray-700"
+                        : "border-gray-300"
+                        }
+        `}
+        
+        >
 
             <nav
                 className={`flex items-center justify-between w-full px-6 py-4`}

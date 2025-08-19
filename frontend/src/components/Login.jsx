@@ -83,9 +83,15 @@ export default function Login() {
   };
 
   return (
-    <div className={`flex items-center min-h-[90vh] max-h-screen ${themeClasses.background}`}>
+    <div className={`flex items-center min-h-[80vh]
+      border-2 m-3  rounded-3xl max-h-screen 
+     ${theme === "dark"
+                        ? "border-gray-700"
+                        : "border-gray-300"
+                        }
+      ${themeClasses.background}`}>
       {/* Left Side - Image/Content Section */}
-      <div className={`hidden lg:flex lg:w-1/2 xl:w-1/2 h-[90vh] items-center justify-center relative overflow-hidden ${themeClasses.leftSection}`}>
+      <div className={`hidden lg:flex lg:w-1/2 xl:w-1/2 h-full items-center justify-center relative overflow-hidden ${themeClasses.leftSection}`}>
 
 
         {/* Content Container */}
@@ -133,7 +139,7 @@ export default function Login() {
       </div>
 
       {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 xl:w-1/2 h-[90vh] flex items-center justify-center p-8">
+      <div className="w-full lg:w-1/2 xl:w-1/2 h-full flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
