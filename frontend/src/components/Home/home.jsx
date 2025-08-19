@@ -13,7 +13,7 @@ export default function Home() {
       <div className="">
         {/* <AnimatedTestimonialsDemo /> */}
         <div
-          className={`min-h-[70vh] border 
+          className={`min-h-[70vh] 
         ${theme == 'dark' ? "bg-gradient-to-b from-black via-gray-800 via-gray-600 via-gray-800 to-black"
               :
               "bg-gradient-to-b from-white via-gray-200 via-gray-200 via-gray-200 to-white"

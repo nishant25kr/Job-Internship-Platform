@@ -25,7 +25,7 @@ function App() {
         <main className="flex-grow">
           {loading && (
             <div
-              className={`fixed inset-0 flex items-center justify-center backdrop-blur-md z-50 ${theme === "light" ? "bg-white/40" : "bg-black/40"
+              className={`fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50 ${theme === "light" ? "bg-white/40" : "bg-black/40"
                 }`}
             >
               <Loading />
