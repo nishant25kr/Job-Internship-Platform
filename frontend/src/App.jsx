@@ -18,24 +18,24 @@ function App() {
         {/* Navbar */}
         <Navbar />
 
-        {/* Global Loading Overlay */}
-
-
         {/* Main Routes */}
-        <main className="flex-grow">
-          {loading && (
+        <main >
+          {loading ? (
             <div
               className={`fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50 ${theme === "light" ? "bg-white/40" : "bg-black/40"
                 }`}
             >
               <Loading />
             </div>
+          ) : (
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/" element={<Home />} />
+              </Routes>
+            </main>
           )}
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/" element={<Home />} />
-          </Routes>
         </main>
 
         {/* Footer */}
