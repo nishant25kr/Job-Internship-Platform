@@ -8,6 +8,11 @@ import Login from "./pages/Login";
 import './App.css';
 import { useSelector } from "react-redux";
 import Loading from "./components/Loading";
+import Profile from "./components/Profile/Profile";
+import ProfileAbout from "./components/Profile/ProfileAbout";
+import AppliedJob from "./components/Profile/AppliedJob";
+import EditProfile from "./components/Profile/EditProfile";
+import ProfileTopSection from "./components/Profile/ProfileTopView";
 
 function App() {
   const { loading, theme } = useSelector((state) => state.auth);
@@ -30,10 +35,17 @@ function App() {
           ) : (
             <main className="flex-grow">
               <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/about" element={<About />} />
                 <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<Profile />}>
+                  <Route path="about" element={<ProfileTopSection />} />
+                  <Route path="applied-job" element={<AppliedJob />} />
+                  <Route path="edit-profile" element={<EditProfile />} />
+                </Route>
+
+                <Route path="/about" element={<About />} />
               </Routes>
+
             </main>
           )}
         </main>

@@ -83,8 +83,8 @@ export default function Login() {
   };
 
   return (
-    <div className={`flex items-center min-h-[80vh]
-      border-2 m-3  rounded-3xl max-h-screen 
+    <div className={`flex items-center min-h-[100vh]
+       rounded-3xl max-h-screen 
      ${theme === "dark"
                         ? "border-gray-700"
                         : "border-gray-300"

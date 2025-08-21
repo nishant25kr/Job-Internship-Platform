@@ -60,8 +60,8 @@ export default function Navbar() {
         }`}>
             <div className={`mt-3 ml-3 mr-3 rounded-3xl transition-all duration-200 ${
                 theme === "dark"
-                    ? `border-gray-700/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10 ' : 'border-2 m-0 bg-gray-900/50'}`
-                    : `border-gray-300/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10 ' : 'border-2 m-0 bg-white/50'}`
+                    ? `border-gray-800/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10 ' : 'border-2 m-0 bg-gray-900/50'}`
+                    : `border-gray-400/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10 ' : 'border-2 m-0 bg-white/50'}`
             } backdrop-blur-lg
 
             `}>
@@ -188,7 +188,7 @@ export default function Navbar() {
                                             </div>
                                             
                                             <div className="p-2">
-                                                <a href="/profile" className={`flex items-center space-x-3 w-full p-3 rounded-lg transition-colors ${
+                                                <a href="/profile/about" className={`flex items-center space-x-3 w-full p-3 rounded-lg transition-colors ${
                                                     theme === 'dark'
                                                         ? 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
                                                         : 'text-gray-600 hover:bg-gray-100/50 hover:text-gray-900'

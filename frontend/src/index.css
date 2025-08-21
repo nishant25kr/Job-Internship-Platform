@@ -1,13 +1,16 @@
 @import "tailwindcss";
 
 html.dark {
-    background-color: black;
-    color: white;
+  @apply bg-black text-white;
 }
 
 html.light {
-    background-color: #fff;
-    color: black;
+  @apply bg-white text-black;
 }
 
 
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}

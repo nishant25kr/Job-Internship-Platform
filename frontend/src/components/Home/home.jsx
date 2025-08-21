@@ -117,8 +117,8 @@ export default function Home() {
 
   return (
     <div className={`${theme === "dark"
-      ? `border-gray-700/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10 border-0 m-3' : 'border-2 m-3 bg-gray-900/50'}`
-      : `border-gray-300/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10 border-0 m-3' : 'border-2 m-3 bg-white/50'}`
+      ? `border-gray-700/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10  m-3' : ' m-3 '}`
+      : `border-gray-300/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10  m-3' : ' m-3 '}`
       } min-h-screen  rounded-3xl transition-all duration-300 overflow-hidden`}>
 
       {/* Hero Section */}
