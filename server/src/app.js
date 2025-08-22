@@ -12,7 +12,8 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'https://job-internship-platform.vercel.app',
-  
+    'https://job-internship-platform-git-main-nishant25krs-projects.vercel.app',
+    'https://job-internship-platform-tvyszvbd9-nishant25krs-projects.vercel.app'
   ],
   credentials: true
 }))
