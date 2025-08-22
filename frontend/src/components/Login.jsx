@@ -47,7 +47,6 @@ export default function Login() {
     setErrors({});
 
     try {
-      console.log(import.meta.env.VITE_BACKEND_URL)
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/users/login`,
         { email, password },

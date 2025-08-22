@@ -6,10 +6,10 @@ function ProfileTopSection() {
     
     const isDark = theme === 'dark';
     
-    const containerClasses = `row-span-1 h-full w-full border rounded-lg p-4 md:p-6 ${
+    const containerClasses = `row-span-1 h-full w-full  rounded-lg p-4 md:p-6 ${
         isDark 
-            ? 'border-gray-700 text-white' 
-            : 'border-gray-200 text-gray-900'
+            ? ' text-white' 
+            : ' text-gray-900'
     }`;
 
     const formatDate = (dateString) => {
@@ -39,7 +39,7 @@ function ProfileTopSection() {
         <div className={containerClasses}>
             <div className=" flex flex-col">
                 {/* Header with User Type Badge */}
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4 md:mb-6">
+                <div className="flex flex-col  sm:flex-row sm:justify-between sm:items-start gap-4 mb-4 md:mb-6">
                     <div className="flex-1 min-w-0">
                         <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-1 md:mb-2 truncate">
                             Welcome back, {user?.fullname?.split(' ')[0] || 'User'}!

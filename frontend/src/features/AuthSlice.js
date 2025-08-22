@@ -1,9 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = JSON.parse(localStorage.getItem("User")) || ({
+let persistedState;
+try {
+    persistedState = JSON.parse(localStorage.getItem("User"));
+} catch {
+    persistedState = null;
+}
+
+
+const initialState = persistedState || ({
     user: null,
     isAuthenticated: false,
     loading: false,
+    passwordLoading: false,
+    editProfileLoading: false,
     error: null,
     rememberMe: false,
     lastLogin: null,
@@ -29,11 +39,11 @@ export const authSlice = createSlice({
         },
         loginFailure: (state, action) => {
             state.loading = false,
-            state.error = action.payload
+                state.error = action.payload
         },
-        logoutStart: (state, action)=>{
+        logoutStart: (state, action) => {
             state.loading = true,
-            state.error = null;
+                state.error = null;
         },
         logoutSucess: (state) => {
             state.user = null;
@@ -42,11 +52,31 @@ export const authSlice = createSlice({
             state.loading = false;
             state.lastLogin = null;
             localStorage.removeItem("User");
-        }
+        },
+        passwordChangeStart: (state) => {
+            state.passwordLoading = true;
+            state.error = null;
+        },
+        passwordChangeSuccess: (state) => {
+            state.passwordLoading = false;
+        },
+        passwordChangeFailure: (state, action) => {
+            state.passwordLoading = false;
+            state.error = action.payload;
+        },
 
     }
 })
 
-export const { loginSuccess, loginStart, loginFailure, logoutSucess, logoutStart } = authSlice.actions
+export const {
+    loginSuccess,
+    loginStart,
+    loginFailure,
+    logoutSucess,
+    logoutStart,
+    passwordChangeStart,
+    passwordChangeSuccess,
+    passwordChangeFailure,
+} = authSlice.actions
 
 export default authSlice.reducer;

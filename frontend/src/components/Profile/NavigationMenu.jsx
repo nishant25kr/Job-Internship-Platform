@@ -23,11 +23,8 @@ function NavigationMenu() {
         return () => window.removeEventListener('resize', checkMobile)
     }, [])
 
-    const containerClasses = `w-full lg:min-h-[90vh] ${isDark ? 'text-white' : 'text-black'}`;
-    const sidebarClasses = `border rounded-lg p-4 lg:p-6 shadow-sm h-full ${isDark
-            ? 'border-gray-700 '
-            : 'border-gray-200 '
-        }`;
+    const containerClasses = `w-full lg:min-h-[85vh] ${isDark ? 'text-white' : 'text-black'}`;
+    const sidebarClasses = ` rounded-lg p-4 lg:p-6  h-full `;
     const avatarBorderClasses = `w-16 h-16 lg:w-24 lg:h-24 rounded-full mx-auto object-cover border-4 ${isDark ? 'border-gray-600' : 'border-gray-100'
         }`;
     const statusIndicatorClasses = `absolute bottom-0 right-0 w-4 h-4 lg:w-6 lg:h-6 bg-green-500 rounded-full border-2 ${isDark ? 'border-gray-800' : 'border-white'
@@ -68,7 +65,7 @@ function NavigationMenu() {
         <div className={containerClasses}>
             <div className={sidebarClasses}>
                 {/* Mobile Header with Hamburger */}
-                <div className="lg:hidden flex justify-between items-center mb-4">
+                <div className="lg:hidden flex justify-between items-center ">
                     <div className="flex items-center space-x-3">
                         <div className="relative">
                             <img
@@ -165,7 +162,7 @@ function NavigationMenu() {
                         </li>
                         <li>
                             <Link 
-                                to="" 
+                                to="change-password" 
                                 className={linkHoverClasses}
                                 onClick={closeMenu}
                             >
@@ -173,8 +170,8 @@ function NavigationMenu() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5z" />
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3" />
                                 </svg>
-                                Notifications
-                                <span className="ml-auto bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                                Change Password
+                                
                             </Link>
                         </li>
                     </ul>

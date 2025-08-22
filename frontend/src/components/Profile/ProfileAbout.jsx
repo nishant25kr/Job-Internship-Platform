@@ -6,30 +6,25 @@ function ProfileAbout() {
     const { theme } = useSelector((state) => state.theme);
     const [isEditing, setIsEditing] = useState(false);
     const [editedBio, setEditedBio] = useState('');
-    
+
     const isDark = theme === 'dark';
-    
-    const containerClasses = `row-span-2 w-full h-full border rounded-lg p-6 ${
-        isDark 
-            ? 'border-gray-700 bg-gray-800 text-white' 
-            : 'border-gray-200 bg-white text-gray-900'
-    }`;
-    
-    const sectionClasses = `p-4 rounded-lg mb-4 ${
-        isDark ? 'bg-gray-700' : 'bg-gray-50'
-    }`;
-    
-    const labelClasses = `text-sm font-medium mb-2 ${
-        isDark ? 'text-gray-300' : 'text-gray-700'
-    }`;
-    
-    const valueClasses = `${
-        isDark ? 'text-gray-100' : 'text-gray-900'
-    }`;
-    
-    const emptyStateClasses = `text-sm italic ${
-        isDark ? 'text-gray-400' : 'text-gray-500'
-    }`;
+
+    const containerClasses = `row-span-2 w-full h-full rounded-lg p-6 ${isDark
+            ? ' bg-gray-800 text-white'
+            : ' bg-white text-gray-900'
+        }`;
+
+    const sectionClasses = `p-4 rounded-lg mb-4 ${isDark ? 'bg-gray-700' : 'bg-gray-50'
+        }`;
+
+    const labelClasses = `text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'
+        }`;
+
+    const valueClasses = `${isDark ? 'text-gray-100' : 'text-gray-900'
+        }`;
+
+    const emptyStateClasses = `text-sm italic ${isDark ? 'text-gray-400' : 'text-gray-500'
+        }`;
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
@@ -56,12 +51,11 @@ function ProfileAbout() {
                 {/* Header */}
                 <div className="flex justify-between items-center mb-6">
                     <h3 className="text-xl font-semibold">Profile Details</h3>
-                    <button 
-                        className={`px-4 py-2 text-sm rounded-lg transition-colors ${
-                            isDark 
-                                ? 'text-blue-400 hover:bg-blue-900/20' 
+                    <button
+                        className={`px-4 py-2 text-sm rounded-lg transition-colors ${isDark
+                                ? 'text-blue-400 hover:bg-blue-900/20'
                                 : 'text-blue-600 hover:bg-blue-50'
-                        }`}
+                            }`}
                         onClick={() => setIsEditing(!isEditing)}
                     >
                         <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,26 +75,24 @@ function ProfileAbout() {
                                 onChange={(e) => setEditedBio(e.target.value)}
                                 placeholder="Tell us about yourself..."
                                 rows={4}
-                                className={`w-full p-3 rounded-lg border resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                                    isDark 
-                                        ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400' 
+                                className={`w-full p-3 rounded-lg border resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${isDark
+                                        ? 'bg-gray-600 border-gray-500 text-white placeholder-gray-400'
                                         : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                                }`}
+                                    }`}
                             />
                             <div className="flex space-x-2">
-                                <button 
+                                <button
                                     onClick={handleSaveBio}
                                     className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
                                 >
                                     Save Bio
                                 </button>
-                                <button 
+                                <button
                                     onClick={handleCancelEdit}
-                                    className={`px-4 py-2 text-sm rounded-lg transition-colors ${
-                                        isDark 
-                                            ? 'text-gray-300 hover:bg-gray-600' 
+                                    className={`px-4 py-2 text-sm rounded-lg transition-colors ${isDark
+                                            ? 'text-gray-300 hover:bg-gray-600'
                                             : 'text-gray-600 hover:bg-gray-100'
-                                    }`}
+                                        }`}
                                 >
                                     Cancel
                                 </button>
@@ -136,11 +128,10 @@ function ProfileAbout() {
                             <div>
                                 <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">User Type</span>
                                 <p className={valueClasses}>
-                                    <span className={`px-2 py-1 text-xs rounded-full ${
-                                        user?.userType === 'Admin' 
+                                    <span className={`px-2 py-1 text-xs rounded-full ${user?.userType === 'Admin'
                                             ? 'bg-purple-100 text-purple-800'
                                             : 'bg-blue-100 text-blue-800'
-                                    }`}>
+                                        }`}>
                                         {user?.userType || 'User'}
                                     </span>
                                 </p>
@@ -155,7 +146,7 @@ function ProfileAbout() {
                             <div>
                                 <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Member Since</span>
                                 <p className={valueClasses}>
-                                    {user?.createdAt 
+                                    {user?.createdAt
                                         ? formatDate(user.createdAt)
                                         : 'Not available'
                                     }
@@ -164,7 +155,7 @@ function ProfileAbout() {
                             <div>
                                 <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">Last Updated</span>
                                 <p className={valueClasses}>
-                                    {user?.updatedAt 
+                                    {user?.updatedAt
                                         ? formatDate(user.updatedAt)
                                         : 'Not available'
                                     }

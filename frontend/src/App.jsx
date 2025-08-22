@@ -13,6 +13,7 @@ import ProfileAbout from "./components/Profile/ProfileAbout";
 import AppliedJob from "./components/Profile/AppliedJob";
 import EditProfile from "./components/Profile/EditProfile";
 import ProfileTopSection from "./components/Profile/ProfileTopView";
+import ChangePass from "./components/Profile/ChangePass";
 
 function App() {
   const { loading, theme } = useSelector((state) => state.auth);
@@ -41,6 +42,7 @@ function App() {
                   <Route path="about" element={<ProfileTopSection />} />
                   <Route path="applied-job" element={<AppliedJob />} />
                   <Route path="edit-profile" element={<EditProfile />} />
+                  <Route path="change-password" element={<ChangePass />} />
                 </Route>
 
                 <Route path="/about" element={<About />} />

@@ -236,6 +236,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
 const updateUserDetail = asyncHandler(async (req, res) => {
   const { newusername, newemail, newfullname } = req.body;
+  
 
   const user = await User.findByIdAndUpdate(req.body._id, {
     $set: {
