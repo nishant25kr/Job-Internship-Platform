@@ -12,7 +12,7 @@ const router = Router();
 
 router.route("/create/a/:jobId").post(verifyJWT,createApplication);
 router.route("/delete/a/:applicationId").post(verifyJWT,deleteApplication);
-router.route("/get-Application").post(verifyJWT,getApplication);
+router.route("/get-application").post(verifyJWT,getApplication);
 
 
 export default router;
