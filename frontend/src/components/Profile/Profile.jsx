@@ -2,9 +2,17 @@ import { useSelector } from "react-redux";
 import NavigationMenu from "./NavigationMenu";
 import { Link, Outlet } from "react-router-dom";
 import EmptyState from "../EmptyState";
+import axios from "axios";
+import { useEffect } from "react";
 
 
 function Profile() {
+    useEffect(() => {
+      axios
+        .get()
+    
+    },)
+    
     const { user } = useSelector((state) => state.auth)
     const {theme} = useSelector((state)=>state.theme)
 

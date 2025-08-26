@@ -102,6 +102,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true, // false for local dev
     sameSite: "none", // lax works better locally
+    path: "/",  
   };
 
 
@@ -135,6 +136,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true, 
     sameSite: "none", 
+    path: "/",  
   };
 
 

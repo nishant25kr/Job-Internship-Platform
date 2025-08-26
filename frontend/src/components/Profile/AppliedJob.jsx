@@ -8,19 +8,19 @@ function AppliedJob() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.post(`http://localhost:8000/api/application/get-Application`,{ withCredentials: true })
-      .then((response)=>{
+    axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/application/get-Application`,
+      { withCredentials: true }
+    )
+      .then((response) => {
         console.log(response)
       })
-      .catch((error)=>[
-        console.log(error.message)
+      .catch((error) => [
+        console.log(error)
       ])
-  
-    
   },)
-  
 
-  
+
+
   return (
     <div>
       this is applied job
