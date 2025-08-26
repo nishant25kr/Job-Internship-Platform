@@ -6,19 +6,14 @@ const app = express();
 
 app.use(cors({
   origin: (origin, callback) => {
-    // allow requests with no origin (like curl or mobile apps)
     if (!origin) return callback(null, true);
 
-    // localhost allowed
     if (origin.includes("localhost:5173")) return callback(null, true);
 
-    // production domain allowed
     if (origin === "https://job-internship-platform.vercel.app") return callback(null, true);
 
-    // ✅ allow all Vercel preview deployments
     if (/\.vercel\.app$/.test(origin)) return callback(null, true);
 
-    // ❌ block other origins
     return callback(new Error("Not allowed by CORS"), false);
   },
   credentials: true

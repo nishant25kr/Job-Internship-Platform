@@ -75,7 +75,26 @@ const deleteApplication = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, null, "Application deleted successfully"));
 });
 
+const getApplication = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    throw new ApiError(401, "User is not logged in"); // 401 is more correct than 404
+  }
+  console.log(req.user._id)
+
+  const applications = await Application.find({applicantname : req.user._id});
+
+  if (!applications || applications.length === 0) {
+    throw new ApiError(404, "No applications found");
+  }
+
+  return res.status(200).json(
+    new ApiResponse(200, applications, "Applications fetched successfully")
+  );
+});
+
+
 export { 
     createApplication, 
-    deleteApplication 
+    deleteApplication,
+    getApplication
 };
