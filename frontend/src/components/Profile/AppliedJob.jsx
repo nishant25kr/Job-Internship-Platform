@@ -9,7 +9,7 @@ function AppliedJob() {
 
   useEffect(() => {
     axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/application/get-application/`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/application/get-application`,
       { withCredentials: true }
     )
       .then((response) => {

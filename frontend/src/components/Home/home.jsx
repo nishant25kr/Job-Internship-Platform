@@ -17,18 +17,7 @@ export default function Home() {
   const { theme } = useSelector((state) => state.theme);
   const [isScrolled, setIsScrolled] = useState(false)
 
-  useEffect(() => {
-    axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/application/get-Application`,
-      { withCredentials: true }
-    )
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => [
-        console.log(error.message)
-      ])
-
-  },)
+ 
 
   useEffect(() => {
     const handleScroll = () => {
