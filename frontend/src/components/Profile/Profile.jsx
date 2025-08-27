@@ -35,18 +35,9 @@ function Profile() {
     const { user } = useSelector((state) => state.auth)
     const { theme } = useSelector((state) => state.theme)
 
-    // if (loading) {
-    //     return <h1>Loading</h1>
-    // }
-
-    // if (!userinfo) {
-    //     return (
-    //         <EmptyState />
-    //     )
-    // }
 
     return (
-        <div className="w-full h-full min-h-[85vh]">
+        <div className="w-full h-full min-h-[85vh] ">
             {/* Mobile Navigation - Fixed at top */}
             <div className="lg:hidden   top-0 z-50  p-2">
                 <NavigationMenu />
@@ -65,7 +56,7 @@ function Profile() {
 
                 {/* Desktop Main Content */}
                 <div className="w-2/3 min-w-0  flex-1 ">
-                    <div className={`w-full h-full  gap-4 border rounded-lg
+                    <div className={`w-full max-h-screen overflow-scroll  gap-4 border rounded-lg
                         ${theme == "dark" ? "border-gray-700" : "border-gray-300"}
                         `}>
                         {loading ? (<LoadingSpinner />) : (<Outlet />)}

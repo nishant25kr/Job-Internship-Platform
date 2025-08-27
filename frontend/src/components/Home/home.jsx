@@ -11,7 +11,8 @@ import Button from "../Button";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { jobs, jobLoading, jobError } = useSelector((state) => state.job);
+  const { jobLoading, jobError } = useSelector((state) => state.job);
+  const [joblist, setJoblist] = useState()
   const { user } = useSelector((state) => state.auth);
 
   const { theme } = useSelector((state) => state.theme);
@@ -22,10 +23,6 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
-      console.log(window.scrollY.length)
-      // if(window.scrollY > 500 && !user){
-      //   alert('please login')
-      // }
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
@@ -41,6 +38,7 @@ export default function Home() {
           `${import.meta.env.VITE_BACKEND_URL}/api/jobs/getall-jobs`
         );
         dispatch(fetchingSuccess(response.data.data));
+        setJoblist(response.data.data)
       } catch (err) {
         console.error("Error fetching jobs:", err);
         dispatch(fetchingFailed(err.response?.data?.message || err.message));
@@ -131,7 +129,7 @@ export default function Home() {
           <LoadingSpinner />
         ) : jobError ? (
           <ErrorState error={jobError} onRetry={handleRetry} />
-        ) : jobs && jobs.length > 0 ? (
+        ) : joblist && joblist.length > 0 ? (
           <div className="max-w-9xl mx-auto">
             {/* Section Header */}
             <div className="text-center mb-12">
@@ -141,13 +139,13 @@ export default function Home() {
               </h2>
               <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                 }`}>
-                Discover {jobs.length} amazing career opportunities
+                Discover {joblist.length} amazing career opportunities
               </p>
             </div>
 
             {/* Jobs Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {jobs.map((job) => (
+              {joblist.map((job) => (
                 <div key={job._id} className="flex justify-center">
                   <CardForJob jobData={job} />
                 </div>
@@ -155,7 +153,7 @@ export default function Home() {
             </div>
 
             {/* View More Button */}
-            {jobs.length > 8 && (
+            {joblist.length > 8 && (
               <div className="text-center mt-12">
 
                 <Button>
