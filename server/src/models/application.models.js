@@ -12,6 +12,15 @@ const applicationSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    applicantDetail: {
+      type: mongoose.Schema.Types.Mixed, 
+      default: null,
+      strict: false
+    },
+    companyDetail:{
+      type: mongoose.Schema.Types.Mixed, 
+      default: null,
+    }
   },
   { timestamps: true }
 );

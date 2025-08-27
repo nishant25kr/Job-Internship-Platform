@@ -101,7 +101,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const option = {
     httpOnly: true,
     secure: true, // false for local dev
-    sameSite: "none", // lax works better locally
+    sameSite: "lax", // lax works better locally
     path: "/",  
   };
 
@@ -135,7 +135,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   const option = {
     httpOnly: true,
     secure: true, 
-    sameSite: "none", 
+    sameSite: "lax", 
     path: "/",  
   };
 
@@ -252,7 +252,6 @@ const updateUserDetail = asyncHandler(async (req, res) => {
 });
 
 const currentUser = asyncHandler(async (req, res) => {
-  console.log("hi")
   if (!req.user) {
     throw new ApiError(400, "No User is logged in");
   }

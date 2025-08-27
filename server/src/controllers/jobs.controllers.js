@@ -44,7 +44,7 @@ const createJob = asyncHandler(async (req, res) => {
   }
 
   const existsamejob = await Job.findOne({
-    name:name,
+    name: name,
     title: title,
     owner: req.user._id,
   });
@@ -74,20 +74,40 @@ const createJob = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createJob, "Job created success fully"));
 });
 
-const getallJob = asyncHandler(async(req,res)=>{
-    const jobs = await Job.find()
+const getallJob = asyncHandler(async (req, res) => {
+  const jobs = await Job.find()
 
-    return res.status(200)
+  return res.status(200)
     .json(
-        new ApiResponse(
-            200,
-            jobs,
-            "All the jobs fetched"
-        )
+      new ApiResponse(
+        200,
+        jobs,
+        "All the jobs fetched"
+      )
     )
 })
 
+const getAppliedJob = asyncHandler(async (req, res) => {
+  const jobId = req.params.jobId?.trim();
+
+  const job = await Job.findById(jobId)
+
+  if(!job){
+    throw new ApiError(400,"Job is not available")
+  }
+
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(200,job,"job fetched success fully")
+  )
+
+  
+
+})
+
 export {
-    createJob,
-    getallJob,
+  createJob,
+  getallJob,
+  getAppliedJob
 };

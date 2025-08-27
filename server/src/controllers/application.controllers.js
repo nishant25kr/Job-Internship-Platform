@@ -1,4 +1,5 @@
 import Application from "../models/application.models.js";
+import companyModels from "../models/company.models.js";
 import jobsModels from "../models/jobs.models.js";
 import User from "../models/user.models.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -24,6 +25,8 @@ const createApplication = asyncHandler(async (req, res) => {
         throw new ApiError(400, "No job ID provided");
     }
 
+    const company = await companyModels.findById(jobToApply.owner).select("name")
+
     const existApplication = await Application.findOne({
         jobId: jobId,
         applicationId: user._id,
@@ -36,6 +39,15 @@ const createApplication = asyncHandler(async (req, res) => {
     const application = await Application.create({
         jobId: jobId,
         applicationId: user._id,
+        companyDetail: {
+            name: company.name,
+            Type: jobToApply.Type,
+            employmentType: jobToApply.employmentType,
+            experienceLevel: jobToApply.experienceLevel,
+            place: jobToApply.place,
+            salary: jobToApply.salary,
+        }
+
     });
 
     if (!application) {
@@ -76,25 +88,25 @@ const deleteApplication = asyncHandler(async (req, res) => {
 });
 
 const getApplication = asyncHandler(async (req, res) => {
-  if (!req.user) {
-    throw new ApiError(401, "User is not logged in"); // 401 is more correct than 404
-  }
-  console.log(req.user._id)
+    if (!req.user) {
+        throw new ApiError(401, "User is not logged in"); // 401 is more correct than 404
+    }
+    // console.log(req.user._id)
 
-  const applications = await Application.find({applicantname : req.user._id});
+    const applications = await Application.find({ applicationId: req.user._id });
+    console.log(applications)
 
-  if (!applications || applications.length === 0) {
-    throw new ApiError(404, "No applications found");
-  }
+    if (!applications || applications.length === 0) {
+        throw new ApiError(404, "No applications found");
+    }
 
-  return res.status(200).json(
-    new ApiResponse(200, applications, "Applications fetched successfully")
-  );
+    return res.status(200).json(
+        new ApiResponse(200, applications, "Applications fetched successfully")
+    );
 });
 
-
-export { 
-    createApplication, 
+export {
+    createApplication,
     deleteApplication,
     getApplication
 };
