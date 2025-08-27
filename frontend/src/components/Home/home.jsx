@@ -33,6 +33,7 @@ export default function Home() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
+        console.log(import.meta.env.VITE_BACKEND_URL)
         dispatch(fetchingStart());
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/jobs/getall-jobs`
