@@ -94,7 +94,6 @@ const getApplication = asyncHandler(async (req, res) => {
     // console.log(req.user._id)
 
     const applications = await Application.find({ applicationId: req.user._id });
-    console.log(applications)
 
     if (!applications || applications.length === 0) {
         throw new ApiError(404, "No applications found");

@@ -3,6 +3,34 @@ import axios from "axios";
 import CardForAppliedJob from "./CardForAppliedJob";
 import LoadingSpinner from "../LoadingSpinner";
 
+function AppliedJobList({ jobs }) {
+  if (jobs.length === 0) {
+    return <p className="text-center text-gray-500 mt-20">No applied jobs found.</p>;
+  }
+
+  return (
+    <ul className="space-y-6">
+      {jobs.map((job) => {
+        const company = job.companyDetail || {};
+        return (
+          <li key={job._id} className="transform transition duration-300 hover:scale-[1.01]">
+            <CardForAppliedJob
+              data={{
+                title: company.title,
+                name: company.name,
+                Type: company.Type,
+                place: company.place,
+                experienceLevel: company.experienceLevel,
+                salary: company.salary,
+              }}
+            />
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 function AppliedJob() {
   const [loading, setLoading] = useState(true);
   const [appliedJobs, setAppliedJobs] = useState([]);
@@ -16,7 +44,6 @@ function AppliedJob() {
           `${import.meta.env.VITE_BACKEND_URL}/api/application/get-application`,
           { withCredentials: true }
         );
-
         setAppliedJobs(res.data?.data || []);
       } catch (err) {
         setError(err.response?.data?.message || err.message);
@@ -28,36 +55,25 @@ function AppliedJob() {
     fetchAppliedJobs();
   }, []);
 
-  if (loading) return <LoadingSpinner/>;
-  if (error) return <p className="text-red-500">Error: {error}</p>;
-  if (appliedJobs.length === 0) return <p>No applied jobs found.</p>;
+  if (loading)
+    return (
+      <main className="flex items-center justify-center h-screen">
+        <LoadingSpinner />
+      </main>
+    );
+
+  if (error)
+    return (
+      <main className="flex items-center justify-center h-screen">
+        <p className="text-red-600 font-semibold text-lg">Error: {error}</p>
+      </main>
+    );
 
   return (
-    <div className="overflow-scroll max-h-screen m-2 p-4">
-      <h1 className="text-xl font-bold mb-4">Applied Jobs</h1>
-      <ul className="space-y-4">
-        {appliedJobs.map((job) => {
-          const company = job.companyDetail || {};
-          return (
-            <li
-              key={job._id}
-
-            >
-              <CardForAppliedJob
-                data={{
-                  title: company.title,
-                  name: company.name,
-                  Type: company.Type,
-                  place: company.place,
-                  experienceLevel: company.experienceLevel,
-                  salary: company.salary,
-                }}
-              />
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <section className="max-w-5xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-8">Applied Jobs</h1>
+      <AppliedJobList jobs={appliedJobs} />
+    </section>
   );
 }
 
