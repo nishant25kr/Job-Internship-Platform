@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../features/AuthSlice";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, isSession } from "react-router-dom";
 import Input from "./Inputt";
 import Button from "./Button";
+import { GoogleLogin } from '@react-oauth/google';
+import { googleLogout } from '@react-oauth/google';
+import {  jwtDecode } from "jwt-decode";
+
 
 export default function Login() {
-   
+
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -85,9 +89,9 @@ export default function Login() {
     <div className={`flex items-center min-h-[100vh]
        rounded-3xl max-h-screen 
      ${theme === "dark"
-                        ? "border-gray-700"
-                        : "border-gray-300"
-                        }
+        ? "border-gray-700"
+        : "border-gray-300"
+      }
       ${themeClasses.background}`}>
       {/* Left Side - Image/Content Section */}
       <div className={`hidden lg:flex lg:w-1/2 xl:w-1/2 h-full items-center justify-center relative overflow-hidden ${themeClasses.leftSection}`}>
@@ -157,6 +161,26 @@ export default function Login() {
             <p className={themeClasses.text.secondary}>
               Enter your credentials to access your account
             </p>
+            <GoogleLogin
+              onSuccess={credentialResponse => {
+                console.log(credentialResponse);
+                const token = credentialResponse.credential;
+                console.log(token)
+                const userInfo = jwtDecode(token); 
+                console.log("User Info:", userInfo);
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+            />
+            <Button onClick={() => { googleLogout() }} >
+              logout
+            </Button>
+
+
+          </div>
+          <div>
+
           </div>
 
           {/* Error Display */}
