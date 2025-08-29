@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../Button';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const CardForJob = ({ jobData }) => {
   const { theme } = useSelector((state) => state.theme);
@@ -65,6 +66,23 @@ const CardForJob = ({ jobData }) => {
       .toUpperCase()
       .slice(0, 2);
   };
+
+  const handleApply = async () =>{
+    console.log(jobData._id)
+    axios
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/application/create/a/${jobData._id}`,
+        { withCredentials: true }
+      )
+      .then((response)=>{
+        console.log(response)
+        if(response.data.success){
+
+        }
+      })
+      .catch((error)=>{
+        console.log(error.message)
+      })
+  }
 
   // Enhanced theme classes
   const cardClasses = theme === 'dark' 
@@ -249,7 +267,9 @@ const CardForJob = ({ jobData }) => {
 
       {/* Action Buttons */}
       <div className="flex gap-3 mt-6">
-        <Button className="flex-1 group-hover:scale-[1.02] transition-transform duration-200">
+        <Button
+        onClick={handleApply}
+        className="flex-1 group-hover:scale-[1.02] transition-transform duration-200">
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
           </svg>

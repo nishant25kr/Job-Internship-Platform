@@ -49,7 +49,7 @@ function ProfileAbout() {
         <div className={containerClasses}>
             <div className="h-full overflow-y-auto">
                 {/* Header */}
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between  items-center mb-6">
                     <h3 className="text-xl font-semibold">Profile Details</h3>
                     <button
                         className={`px-4 py-2 text-sm rounded-lg transition-colors ${isDark

@@ -109,7 +109,7 @@ const loginwithOauth = asyncHandler(async (req, res) => {
   const option = {
     httpOnly: true,
     secure: true, // false for local dev
-    sameSite: "none", // lax works better locally
+    sameSite: "lax", // lax works better locally
     path: "/",
   };
 
@@ -157,8 +157,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const option = {
     httpOnly: true,
-    secure: true, // false for local dev
-    sameSite: "none", // lax works better locally
+    secure: false, // false for local dev
+    sameSite: "lax", // lax works better locally
     path: "/",
   };
 
@@ -192,7 +192,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   const option = {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
+    sameSite: "lax",
     path: "/",
   };
 

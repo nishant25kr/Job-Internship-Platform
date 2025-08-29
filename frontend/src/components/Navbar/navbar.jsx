@@ -273,10 +273,10 @@ export default function Navbar() {
                                             ? 'bg-gradient-to-br from-purple-600 to-blue-600'
                                             : 'bg-gradient-to-br from-purple-500 to-blue-500'
                                             }`}>
-                                            <Link className="text-white font-bold">
+                                            <div className="text-white font-bold">
                                                 {user.fullname.split(" ")[0]?.charAt(0).toUpperCase() || "U"}
                                                 {user.fullname.split(" ")[1]?.charAt(0).toUpperCase() || "U"}
-                                            </Link>
+                                            </div>
                                         </div>
                                         <div>
                                             <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"

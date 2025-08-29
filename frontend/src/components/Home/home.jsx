@@ -13,6 +13,8 @@ export default function Home() {
   const dispatch = useDispatch();
   const { jobLoading, jobError } = useSelector((state) => state.job);
   const [joblist, setJoblist] = useState()
+  const [loading, setLoading] = useState(true)
+  const [joberror,setJoberror] = useState()
   const { user } = useSelector((state) => state.auth);
 
   const { theme } = useSelector((state) => state.theme);
@@ -31,23 +33,25 @@ export default function Home() {
 
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        console.log(import.meta.env.VITE_BACKEND_URL)
-        dispatch(fetchingStart());
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/jobs/getall-jobs`
-        );
-        dispatch(fetchingSuccess(response.data.data));
-        setJoblist(response.data.data)
-      } catch (err) {
-        console.error("Error fetching jobs:", err);
-        dispatch(fetchingFailed(err.response?.data?.message || err.message));
-      }
-    };
+    setLoading(true)
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/jobs/getall-jobs`,
+        {withCredentials:true}
+      )
+      .then((response)=>{
+        if(response.data.success && response.length != 0){
+          console.log(response.data.data)
+          setJoblist(response.data.data)
+          setLoading(false)
+        }
+      }).catch((error)=>{
+        console.log("error",error)
+        setJoberror(error.message)
+        setLoading(false)
+      })
+          
+  }, []);
 
-    fetchJobs();
-  }, [dispatch]);
 
   // Error Component
   const ErrorState = ({ error, onRetry }) => (
@@ -126,10 +130,10 @@ export default function Home() {
 
       {/* Jobs Section */}
       <section className="">
-        {jobLoading ? (
+        {loading ? (
           <LoadingSpinner />
-        ) : jobError ? (
-          <ErrorState error={jobError} onRetry={handleRetry} />
+        ) : joberror ? (
+          <ErrorState error={joberror} onRetry={handleRetry} />
         ) : joblist && joblist.length > 0 ? (
           <div className="max-w-9xl mx-auto">
             {/* Section Header */}

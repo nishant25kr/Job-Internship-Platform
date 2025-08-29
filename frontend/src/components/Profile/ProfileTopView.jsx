@@ -3,14 +3,13 @@ import { useSelector } from "react-redux";
 function ProfileTopSection() {
     const { user } = useSelector((state) => state.auth);
     const { theme } = useSelector((state) => state.theme);
-    
+
     const isDark = theme === 'dark';
-    
-    const containerClasses = `row-span-1 h-full w-full  rounded-lg p-4 md:p-6 ${
-        isDark 
-            ? ' text-white' 
+
+    const containerClasses = `row-span-1 h-full w-full  rounded-lg p-4 md:p-6 ${isDark
+            ? ' text-white'
             : ' text-gray-900'
-    }`;
+        }`;
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
@@ -25,7 +24,7 @@ function ProfileTopSection() {
         const now = new Date();
         const diffTime = Math.abs(now - created);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
+
         if (diffDays < 30) {
             return `${diffDays} days`;
         } else if (diffDays < 365) {
@@ -40,7 +39,8 @@ function ProfileTopSection() {
             <div className=" flex flex-col">
                 {/* Header with User Type Badge */}
                 <div className="flex flex-col  sm:flex-row sm:justify-between sm:items-start gap-4 mb-4 md:mb-6">
-                    <div className="flex-1 min-w-0">
+
+                    <div className="flex-1 min-w-0  ">
                         <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-1 md:mb-2 truncate">
                             Welcome back, {user?.fullname?.split(' ')[0] || 'User'}!
                         </h3>
@@ -48,15 +48,14 @@ function ProfileTopSection() {
                             Here's your profile overview
                         </p>
                     </div>
-                    <div className={`px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium border-2 self-start sm:self-center ${
-                        user?.userType === 'Admin' 
-                            ? isDark 
-                                ? 'border-purple-500 text-purple-400' 
+                    <div className={`px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium border-2 self-start sm:self-center ${user?.userType === 'Admin'
+                            ? isDark
+                                ? 'border-purple-500 text-purple-400'
                                 : 'border-purple-500 text-purple-600'
-                            : isDark 
-                                ? 'border-blue-500 text-blue-400' 
+                            : isDark
+                                ? 'border-blue-500 text-blue-400'
                                 : 'border-blue-500 text-blue-600'
-                    }`}>
+                        }`}>
                         {user?.userType || 'User'}
                     </div>
                 </div>
@@ -64,9 +63,8 @@ function ProfileTopSection() {
                 {/* Main Content Grid */}
                 <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
                     {/* Profile Summary Card */}
-                    <div className={`lg:col-span-2 border rounded-lg md:rounded-xl p-4 md:p-6 ${
-                        isDark ? 'border-gray-700' : 'border-gray-200'
-                    }`}>
+                    <div className={`lg:col-span-2 border rounded-lg md:rounded-xl p-4 md:p-6 ${isDark ? 'border-gray-700' : 'border-gray-200'
+                        }`}>
                         <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2 mb-4">
                             <h4 className={`text-base md:text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                                 Account Details
@@ -78,7 +76,7 @@ function ProfileTopSection() {
                                 </span>
                             </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
                             <div className="space-y-3 md:space-y-4">
                                 <div className="flex items-start xs:items-center space-x-3">
@@ -94,7 +92,7 @@ function ProfileTopSection() {
                                         </p>
                                     </div>
                                 </div>
-                                
+
                                 <div className="flex items-start xs:items-center space-x-3">
                                     <div className={`p-1.5 md:p-2 rounded-lg flex-shrink-0 ${isDark ? 'text-green-400' : 'text-green-600'}`}>
                                         <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,7 +107,7 @@ function ProfileTopSection() {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div className="space-y-3 md:space-y-4">
                                 <div className="flex items-start xs:items-center space-x-3">
                                     <div className={`p-1.5 md:p-2 rounded-lg flex-shrink-0 ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
@@ -124,7 +122,7 @@ function ProfileTopSection() {
                                         </p>
                                     </div>
                                 </div>
-                                
+
                                 <div className="flex items-start xs:items-center space-x-3">
                                     <div className={`p-1.5 md:p-2 rounded-lg flex-shrink-0 ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>
                                         <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,13 +141,12 @@ function ProfileTopSection() {
                     </div>
 
                     {/* Activity Timeline Card */}
-                    <div className={`border rounded-lg md:rounded-xl p-4 md:p-6 ${
-                        isDark ? 'border-gray-700' : 'border-gray-200'
-                    }`}>
+                    <div className={`border rounded-lg md:rounded-xl p-4 md:p-6 ${isDark ? 'border-gray-700' : 'border-gray-200'
+                        }`}>
                         <h4 className={`text-base md:text-lg font-semibold mb-3 md:mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                             Account Timeline
                         </h4>
-                        
+
                         <div className="space-y-3 md:space-y-4">
                             <div className="flex items-start space-x-3">
                                 <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full mt-1 md:mt-2 flex-shrink-0 ${isDark ? 'bg-blue-400' : 'bg-blue-500'}`}></div>
@@ -165,7 +162,7 @@ function ProfileTopSection() {
                                     </p>
                                 </div>
                             </div>
-                            
+
                             <div className="flex items-start space-x-3">
                                 <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full mt-1 md:mt-2 flex-shrink-0 ${isDark ? 'bg-green-400' : 'bg-green-500'}`}></div>
                                 <div className="min-w-0 flex-1">
@@ -177,7 +174,7 @@ function ProfileTopSection() {
                                     </p>
                                 </div>
                             </div>
-                            
+
                             <div className="flex items-start space-x-3">
                                 <div className="w-2 h-2 md:w-3 md:h-3 rounded-full mt-1 md:mt-2 bg-yellow-500 flex-shrink-0"></div>
                                 <div className="min-w-0 flex-1">
