@@ -7,7 +7,7 @@ import Input from "./Inputt";
 import Button from "./Button";
 import { GoogleLogin } from '@react-oauth/google';
 import { googleLogout } from '@react-oauth/google';
-import {  jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 
 export default function Login() {
@@ -73,6 +73,41 @@ export default function Login() {
       setErrors({ submit: errorMessage });
     }
   };
+
+  const handleGoogleLogin = (e) => {
+    console.log(e)
+    if (!e) {
+      alert("please provide required data for google login")
+    }
+    const userId = e.userId;
+    const email = e.email;
+    const name = e.name;
+    const profilePhoto = e.profilePhoto;
+    dispatch(loginStart());
+    axios
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/users/oauth-login`,
+        { userId, email, name, profilePhoto },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        if (response.data.success) {
+          const userOb = response.data.data.LoggedInUser;
+          dispatch(loginSuccess({
+            user: userOb,
+            rememberMe,
+          }));
+          navigate('/')
+        } else {
+          dispatch(loginFailure("Invalid credentials"));
+          setErrors({ submit: "Invalid credentials" });
+        }
+      })
+      .catch((error) => {
+        const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+        dispatch(loginFailure(errorMessage));
+        setErrors({ submit: errorMessage });
+      })
+  }
 
   // Theme-based classes
   const themeClasses = {
@@ -163,11 +198,17 @@ export default function Login() {
             </p>
             <GoogleLogin
               onSuccess={credentialResponse => {
-                console.log(credentialResponse);
                 const token = credentialResponse.credential;
-                console.log(token)
-                const userInfo = jwtDecode(token); 
+                const userInfo = jwtDecode(token);
                 console.log("User Info:", userInfo);
+                const data = {
+                  userId: token,
+                  email: userInfo.email,
+                  name: userInfo.name,
+                  profilePhoto: userInfo.picture
+                }
+                handleGoogleLogin(data)
+
               }}
               onError={() => {
                 console.log('Login Failed');

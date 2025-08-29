@@ -71,6 +71,63 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "User created successfully"));
 });
 
+const loginwithOauth = asyncHandler(async (req, res) => {
+
+  const { userId, email, name, profilePhoto } = req.body;
+
+  if (!userId) {
+    throw new ApiError(400, "User Id is not available")
+  }
+
+  const user = await User.findOne({ email }).select("-password -refreshToken")
+
+  if (!user) {
+
+    console.log("User not exist")
+
+    const user = await User.create({
+      username: name,
+      fullname: name,
+      email,
+      profilePhoto,
+      provider: 'google'
+    })
+
+  }
+
+
+  console.log("User already exist")
+  const { accessToken, refreshToken } = await generateAccessandRefreshToken(
+    user._id
+  );
+
+
+  const LoggedInUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  const option = {
+    httpOnly: true,
+    secure: true, // false for local dev
+    sameSite: "none", // lax works better locally
+    path: "/",
+  };
+
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, option)
+    .cookie("refreshToken", refreshToken, option)
+    .json(
+      new ApiResponse(
+        200,
+        { LoggedInUser, accessToken, refreshToken },
+        "User login successfull"
+      )
+    );
+
+})
+
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -102,7 +159,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true, // false for local dev
     sameSite: "none", // lax works better locally
-    path: "/",  
+    path: "/",
   };
 
 
@@ -134,9 +191,9 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const option = {
     httpOnly: true,
-    secure: true, 
-    sameSite: "none", 
-    path: "/",  
+    secure: true,
+    sameSite: "none",
+    path: "/",
   };
 
 
@@ -238,7 +295,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
 const updateUserDetail = asyncHandler(async (req, res) => {
   const { newusername, newemail, newfullname } = req.body;
-  
+
 
   const user = await User.findByIdAndUpdate(req.body._id, {
     $set: {
@@ -271,4 +328,5 @@ export {
   changePassword,
   updateUserDetail,
   currentUser,
+  loginwithOauth
 };
