@@ -196,27 +196,36 @@ export default function Login() {
             <p className={themeClasses.text.secondary}>
               Enter your credentials to access your account
             </p>
-            <GoogleLogin
-              onSuccess={credentialResponse => {
-                const token = credentialResponse.credential;
-                const userInfo = jwtDecode(token);
-                console.log("User Info:", userInfo);
-                const data = {
-                  userId: token,
-                  email: userInfo.email,
-                  name: userInfo.name,
-                  profilePhoto: userInfo.picture
-                }
-                handleGoogleLogin(data)
+            <div className="p-1 grid grid-cols-2">
+              <div className="col-span-1">
 
-              }}
-              onError={() => {
-                console.log('Login Failed');
-              }}
-            />
-            <Button onClick={() => { googleLogout() }} >
-              logout
-            </Button>
+                <GoogleLogin
+                  onSuccess={credentialResponse => {
+                    const token = credentialResponse.credential;
+                    const userInfo = jwtDecode(token);
+                    console.log("User Info:", userInfo);
+                    const data = {
+                      userId: token,
+                      email: userInfo.email,
+                      name: userInfo.name,
+                      profilePhoto: userInfo.picture
+                    }
+                    handleGoogleLogin(data)
+
+                  }}
+                  onError={() => {
+                    console.log('Login Failed');
+                  }}
+                />
+
+              </div>
+               <div className="col-span-1">
+
+                  
+               </div>
+
+
+            </div>
 
 
           </div>
