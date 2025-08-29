@@ -20,6 +20,7 @@ export default function Navbar() {
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20)
+            // setIsScrolled(true)
         }
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
@@ -59,17 +60,17 @@ export default function Navbar() {
     return (
         <section className={`sticky top-0  z-50 transition-all duration-100 ${isScrolled ? 'backdrop-blur-md bg-opacity-80' : ''
             }`}>
-            <div className={`mt-3 ml-3 mr-3 rounded-3xl transition-all duration-200 ${theme === "dark"
+            <div className={`mt-3 ml-3 mr-3 rounded-3xl  ${theme === "dark"
                 ? `border-gray-800/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10 ' : 'border-2 m-0 bg-gray-900/50'}`
                 : `border-gray-400/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10 ' : 'border-2 m-0 bg-white/50'}`
                 } backdrop-blur-lg
 
             `}>
 
-                <nav className="flex items-center justify-between w-full px-6 py-4">
+                <nav className="flex items-center justify-between w-full md:px-6 sm:px-2 py-4">
 
                     {/* Logo Section - Enhanced */}
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-1 pl-2">
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme === 'dark'
                             ? 'bg-gradient-to-br from-purple-600 to-blue-600'
                             : 'bg-gradient-to-br from-purple-500 to-blue-500'
@@ -85,7 +86,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Desktop Navigation Links */}
-                    <div className="hidden lg:flex items-center space-x-8">
+                    <div className="hidden lg:flex  items-center space-x-8">
                         {navLinks.map((link) => (
                             <a
                                 key={link.name}
@@ -223,7 +224,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <div className="md:hidden flex items-center space-x-3">
+                    <div className="md:hidden flex items-center space-x-1">
                         <ThemeToggle />
 
                         <button
@@ -266,13 +267,13 @@ export default function Navbar() {
 
                             {/* Mobile Auth Section */}
                             {user ? (
-                                <div to="/profile/about" onClick={()=>{setIsOpen(!isOpen)}} className="space-y-4 pt-4 border-t border-opacity-20 border-gray-400">
-                                    <Link className="flex items-center space-x-3 p-3">
+                                <div onClick={() => { setIsOpen(!isOpen) }} className="space-y-4 pt-4 border-t border-opacity-20 border-gray-400">
+                                    <Link className="flex items-center space-x-3 p-3" to="/profile/about">
                                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${theme === 'dark'
                                             ? 'bg-gradient-to-br from-purple-600 to-blue-600'
                                             : 'bg-gradient-to-br from-purple-500 to-blue-500'
                                             }`}>
-                                            <Link  className="text-white font-bold">
+                                            <Link className="text-white font-bold">
                                                 {user.fullname.split(" ")[0]?.charAt(0).toUpperCase() || "U"}
                                                 {user.fullname.split(" ")[1]?.charAt(0).toUpperCase() || "U"}
                                             </Link>
@@ -289,7 +290,7 @@ export default function Navbar() {
                                         </div>
                                     </Link>
                                     <Button
-                                        onClick={()=>{
+                                        onClick={() => {
                                             logoutHandler();
                                             setIsOpen(!isOpen)
                                         }}
@@ -301,7 +302,7 @@ export default function Navbar() {
                             ) : (
                                 <div className="space-y-3 pt-4 border-t border-opacity-20 border-gray-400">
                                     <Button
-                                        onClick={()=>{
+                                        onClick={() => {
                                             LoginClicked();
                                             setIsOpen(!isOpen)
                                         }}

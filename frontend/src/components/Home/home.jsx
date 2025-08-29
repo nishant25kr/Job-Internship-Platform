@@ -117,15 +117,15 @@ export default function Home() {
 
   return (
     <div className={`${theme === "dark"
-      ? `border-gray-700/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10  m-3' : ' m-3 '}`
-      : `border-gray-300/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10  m-3' : ' m-3 '}`
+      ? `border-gray-700/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10 m-3 ' : 'm-3 '}`
+      : `border-gray-300/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10  m-3' : ' m-3'}`
       } min-h-screen  rounded-3xl transition-all duration-300 overflow-hidden`}>
 
       {/* Hero Section */}
       <Hero />
 
       {/* Jobs Section */}
-      <section className="px-6 py-6">
+      <section className="">
         {jobLoading ? (
           <LoadingSpinner />
         ) : jobError ? (
