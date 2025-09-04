@@ -4,6 +4,7 @@ import CardForAppliedJob from "./CardForAppliedJob";
 import LoadingSpinner from "../LoadingSpinner";
 
 function AppliedJobList({ jobs }) {
+
   if (jobs.length === 0) {
     return <p className="text-center text-gray-500 mt-20">No applied jobs found.</p>;
   }
@@ -16,6 +17,7 @@ function AppliedJobList({ jobs }) {
           <li key={job._id} className="transform transition duration-300 hover:scale-[1.01]">
             <CardForAppliedJob
               data={{
+                _id: job._id,
                 title: company.title,
                 name: company.name,
                 Type: company.Type,

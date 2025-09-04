@@ -14,7 +14,6 @@ const createApplication = asyncHandler(async (req, res) => {
     }
 
     const jobId = req.params.jobId?.trim();
-    console.log(jobId)
 
     const jobToApply = await jobsModels.findById(jobId);
 
@@ -30,7 +29,7 @@ const createApplication = asyncHandler(async (req, res) => {
 
     const existApplication = await Application.findOne({
         jobId: jobId,
-        applicationId: user._id,
+        applicantId: user._id,
     });
 
     if (existApplication) {
@@ -39,7 +38,7 @@ const createApplication = asyncHandler(async (req, res) => {
 
     const application = await Application.create({
         jobId: jobId,
-        applicationId: user._id,
+        applicantId: user._id,
         companyDetail: {
             name: company.name,
             Type: jobToApply.Type,
@@ -47,7 +46,8 @@ const createApplication = asyncHandler(async (req, res) => {
             experienceLevel: jobToApply.experienceLevel,
             place: jobToApply.place,
             salary: jobToApply.salary,
-        }
+        },
+
 
     });
 
@@ -92,9 +92,10 @@ const getApplication = asyncHandler(async (req, res) => {
     if (!req.user) {
         throw new ApiError(401, "User is not logged in"); // 401 is more correct than 404
     }
-    // console.log(req.user._id)
 
-    const applications = await Application.find({ applicationId: req.user._id });
+    const applications = await Application.find({ applicantId: req.user._id });
+
+    console.log(applications)
 
     if (!applications || applications.length === 0) {
         throw new ApiError(404, "No applications found");

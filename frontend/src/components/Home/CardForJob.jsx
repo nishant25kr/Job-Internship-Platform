@@ -66,7 +66,7 @@ const CardForJob = ({ jobData }) => {
       .slice(0, 2);
   };
 
-  const handleApply = async () => {
+  const handleApply = () => {
     console.log(jobData._id)
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/api/application/create/a/${jobData._id}`,
