@@ -7,13 +7,14 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const createApplication = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user?._id);
 
     if (!user) {
         throw new ApiError(400, "User not found");
     }
 
     const jobId = req.params.jobId?.trim();
+    console.log(jobId)
 
     const jobToApply = await jobsModels.findById(jobId);
 

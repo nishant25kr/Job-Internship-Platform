@@ -40,7 +40,6 @@ export default function Home() {
       )
       .then((response)=>{
         if(response.data.success && response.length != 0){
-          console.log(response.data.data)
           setJoblist(response.data.data)
           setLoading(false)
         }

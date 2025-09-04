@@ -13,7 +13,6 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'https://job-internship-platform.vercel.app',
-
   ],
   credentials: true
 }))
