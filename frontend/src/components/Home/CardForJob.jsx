@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '../Button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAgreeFalse, setAgreeTrue } from "../../features/JobAuthSlice.js"
 import axios from 'axios';
+import AlertDialogSlide from '../AlertBox';
 
 const CardForJob = ({ jobData }) => {
   const { theme } = useSelector((state) => state.theme);
+  const { aggredToApply } = useSelector((state)=> state.jobs)
+  const dispatch = useDispatch()
 
   // Add default values and validation
   if (!jobData) {
@@ -66,22 +70,32 @@ const CardForJob = ({ jobData }) => {
       .slice(0, 2);
   };
 
-  const handleApply = () => {
-    console.log(jobData._id)
-    axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/api/application/create/a/${jobData._id}`,
-        {},
-        { withCredentials: true }
-      )
-      .then((response) => {
-        if (response.data.success) {
-            alert(`success fully applied for ${response.data.data.companyDetail.name}`)
-        }
-      })
-      .catch((error) => {
-        console.log(error.message)
-      })
-  }
+  useEffect(() => {
+    console.log("hi this id useeffect")
+
+    dispatch.setAgreeTrue()
+    // console.log(aggredToApply)
+    // const handleApply = () => {
+    //   console.log(jobData._id)
+    //   axios
+    //     .post(`${import.meta.env.VITE_BACKEND_URL}/api/application/create/a/${jobData._id}`,
+    //       {},
+    //       { withCredentials: true }
+    //     )
+    //     .then((response) => {
+    //       if (response.data.success) {
+    //         alert(`success fully applied for ${response.data.data.companyDetail.name}`)
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error.message)
+    //     })
+    // }
+
+    // return () => {
+    //   second
+    // }
+  }, [])
 
   // Enhanced theme classes
   const cardClasses = theme === 'dark'
@@ -243,15 +257,18 @@ const CardForJob = ({ jobData }) => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-3 mt-6">
-        <Button
+      <div className="flex justify-center gap-1  mt-6">
+        {/* <Button
           onClick={handleApply}
           className="flex-1 group-hover:scale-[1.02] transition-transform duration-200">
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
           </svg>
-          Apply Now
-        </Button>
+
+        </Button> */}
+        <div className=''>
+          <AlertDialogSlide />
+        </div>
         <button className={`px-4 py-2 rounded-lg border transition-all duration-200 ${theme === 'dark'
           ? 'border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-gray-500'
           : 'border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400'

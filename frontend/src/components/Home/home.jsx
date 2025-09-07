@@ -7,6 +7,7 @@ import Hero from "./Hero";
 import CardForJob from "./CardForJob";
 import LoadingSpinner from "../LoadingSpinner";
 import Button from "../Button";
+import AlertDialogSlide from "../AlertBox";
 
 
 export default function Home() {
@@ -126,6 +127,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero />
+      <AlertDialogSlide/>
 
       {/* Jobs Section */}
       <section className="">
