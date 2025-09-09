@@ -4,7 +4,7 @@ const initialState = {
   jobs: [],
   jobLoading: false,
   jobError: null,
-  aggredToApply: false
+  agreedToApply: false,  
 };
 
 export const jobsSlice = createSlice({
@@ -23,15 +23,12 @@ export const jobsSlice = createSlice({
       state.jobLoading = false;
       state.jobError = action.payload;
     },
-    setAgreeTrue: (state) => {
-      state.aggredToApply = true
-    },
-    setAgreeFalse: (state) => {
-      state.aggredToApply = false
+    setAgree: (state, action) => {
+      state.agreedToApply = action.payload
     }
 
   },
 });
 
-export const { fetchingStart, fetchingSuccess, fetchingFailed, setAgreeTrue, setAgreeFalse } = jobsSlice.actions;
+export const { fetchingStart, fetchingSuccess, fetchingFailed, setAgree } = jobsSlice.actions;
 export default jobsSlice.reducer;

@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import Button from '../Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAgreeFalse, setAgreeTrue } from "../../features/JobAuthSlice.js"
+import { setAgree } from "../../features/JobAuthSlice.js"
 import axios from 'axios';
 import AlertDialogSlide from '../AlertBox';
+import Swal from "sweetalert2";
+
 
 const CardForJob = ({ jobData }) => {
   const { theme } = useSelector((state) => state.theme);
-  const { aggredToApply } = useSelector((state)=> state.jobs)
+  const { agreedToApply } = useSelector((state) => state.job)
   const dispatch = useDispatch()
 
   // Add default values and validation
@@ -70,32 +72,47 @@ const CardForJob = ({ jobData }) => {
       .slice(0, 2);
   };
 
-  useEffect(() => {
-    console.log("hi this id useeffect")
 
-    dispatch.setAgreeTrue()
-    // console.log(aggredToApply)
-    // const handleApply = () => {
-    //   console.log(jobData._id)
-    //   axios
-    //     .post(`${import.meta.env.VITE_BACKEND_URL}/api/application/create/a/${jobData._id}`,
-    //       {},
-    //       { withCredentials: true }
-    //     )
-    //     .then((response) => {
-    //       if (response.data.success) {
-    //         alert(`success fully applied for ${response.data.data.companyDetail.name}`)
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error.message)
-    //     })
-    // }
 
-    // return () => {
-    //   second
-    // }
-  }, [])
+  const handleApply = () => {
+    Swal.fire({
+      title: "Apply for this job?",
+      text: "Do you really want to apply?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#4f46e5",  // indigo
+      cancelButtonColor: "#6b7280",   // gray
+      confirmButtonText: "Yes, Apply!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .post(
+            `${import.meta.env.VITE_BACKEND_URL}/api/application/create/a/${jobData._id}`,
+            {},
+            { withCredentials: true }
+          )
+          .then((response) => {
+            if (response.data.success) {
+              Swal.fire(
+                "Applied!",
+                `Successfully applied for ${response.data.data.companyDetail.name}`,
+                "success"
+              );
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            Swal.fire("Error!", "Something went wrong. Please try again.", "error");
+          });
+      }
+    });
+  };
+
+
+
+
+
 
   // Enhanced theme classes
   const cardClasses = theme === 'dark'
@@ -104,6 +121,9 @@ const CardForJob = ({ jobData }) => {
 
   return (
     <div className={`${cardClasses} relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-6 max-w-sm border group`}>
+
+
+      {agreedToApply ? "true" : "false"}
 
       {/* Floating Background Decoration */}
       <div className="absolute top-0 right-0 w-32 h-32 -translate-y-16 translate-x-16 opacity-5 pointer-events-none">
@@ -258,17 +278,17 @@ const CardForJob = ({ jobData }) => {
 
       {/* Action Buttons */}
       <div className="flex justify-center gap-1  mt-6">
-        {/* <Button
+        <Button
           onClick={handleApply}
           className="flex-1 group-hover:scale-[1.02] transition-transform duration-200">
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
           </svg>
-
-        </Button> */}
-        <div className=''>
+          Apply
+        </Button>
+        {/* <div className=''>
           <AlertDialogSlide />
-        </div>
+        </div> */}
         <button className={`px-4 py-2 rounded-lg border transition-all duration-200 ${theme === 'dark'
           ? 'border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-gray-500'
           : 'border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400'

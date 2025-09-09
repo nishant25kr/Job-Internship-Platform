@@ -7,12 +7,16 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import Button from './Button';
+import { setAgree } from "../features/JobAuthSlice.js"
+
+import { useDispatch } from 'react-redux';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function AlertDialogSlide() {
+  const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -20,6 +24,7 @@ export default function AlertDialogSlide() {
   };
 
   const handleClose = () => {
+    dispatch(setAgree(true))
     setOpen(false);
   };
 
