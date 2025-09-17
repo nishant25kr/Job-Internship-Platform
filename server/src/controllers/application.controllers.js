@@ -33,7 +33,15 @@ const createApplication = asyncHandler(async (req, res) => {
     });
 
     if (existApplication) {
-        throw new ApiError(400, "You have already applied for this job");
+        return res
+            .status(400)
+            .json(
+                new ApiResponse(
+                    400,
+                    {},
+                    "You have already applied for this job"
+                )
+            );
     }
 
     const application = await Application.create({

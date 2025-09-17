@@ -27,7 +27,7 @@ export default function Navbar() {
     }, [])
 
     const LoginClicked = () => navigate("/login")
-    const SignupClicked = () => navigate("/signup")
+    const GiveJobClicket = () => navigate("/CompanyLogin-signup")
 
     const logoutHandler = () => {
         dispatch(logoutStart())
@@ -43,6 +43,7 @@ export default function Navbar() {
                     setIsOpen(false)
                     setShowUserMenu(false)
                     navigate('/')
+                    window.scrollTo(0, 0);
 
                 }
             })
@@ -61,8 +62,8 @@ export default function Navbar() {
         <section className={`sticky top-0  z-50 transition-all duration-100 ${isScrolled ? 'backdrop-blur-md bg-opacity-80' : ''
             }`}>
             <div className={`mt-3 ml-3 mr-3 rounded-3xl  ${theme === "dark"
-                ? `border-gray-800/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10 ' : 'border-2 m-0 bg-gray-900/50'}`
-                : `border-gray-400/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10 ' : 'border-2 m-0 bg-white/50'}`
+                ? `border-gray-700/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10 ' : 'border-1 m-0 '}`
+                : `border-gray-400/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10 ' : 'border-1 m-0 '}`
                 } backdrop-blur-lg
 
             `}>
@@ -208,16 +209,16 @@ export default function Navbar() {
                             <div className="flex items-center space-x-3">
                                 <Button
                                     onClick={LoginClicked}
-                                    className="border-2 border-transparent hover:border-purple-500/50 backdrop-blur-sm"
+                                    className=" border-transparent hover:border-purple-500/50 backdrop-blur-sm"
                                 >
                                     Login
                                 </Button>
                                 <Button
-                                    onClick={SignupClicked}
-                                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200"
+                                    onClick={GiveJobClicket}
                                 >
-                                    Sign Up
+                                    GiveJob
                                 </Button>
+                                
                             </div>
                         )}
                         <ThemeToggle />

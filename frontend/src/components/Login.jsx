@@ -6,7 +6,6 @@ import { useNavigate, Link, isSession } from "react-router-dom";
 import Input from "./Inputt";
 import Button from "./Button";
 import { GoogleLogin } from '@react-oauth/google';
-import { googleLogout } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 
 
@@ -63,6 +62,7 @@ export default function Login() {
           rememberMe,
         }));
         navigate('/');
+        window.scrollTo(0, 0);
       } else {
         dispatch(loginFailure("Invalid credentials"));
         setErrors({ submit: "Invalid credentials" });
@@ -97,6 +97,7 @@ export default function Login() {
             rememberMe,
           }));
           navigate('/')
+          window.scrollTo(0, 0);
         } else {
           dispatch(loginFailure("Invalid credentials"));
           setErrors({ submit: "Invalid credentials" });
@@ -196,8 +197,8 @@ export default function Login() {
             <p className={themeClasses.text.secondary}>
               Enter your credentials to access your account
             </p>
-            <div className="p-1 grid grid-cols-2">
-              <div className="col-span-1">
+            <div className="p-1 ">
+
 
                 <GoogleLogin
                   onSuccess={credentialResponse => {
@@ -218,11 +219,11 @@ export default function Login() {
                   }}
                 />
 
-              </div>
-               <div className="col-span-1">
 
-                  
-               </div>
+              <div className="col-span-1">
+
+
+              </div>
 
 
             </div>

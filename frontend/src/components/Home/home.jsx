@@ -127,7 +127,6 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero />
-      <AlertDialogSlide/>
 
       {/* Jobs Section */}
       <section className="">

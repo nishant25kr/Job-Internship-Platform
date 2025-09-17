@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
 import Button from '../Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAgree } from "../../features/JobAuthSlice.js"
+import { useSelector } from 'react-redux';
 import axios from 'axios';
-import AlertDialogSlide from '../AlertBox';
 import Swal from "sweetalert2";
-
+import { useNavigate } from 'react-router-dom';
 
 const CardForJob = ({ jobData }) => {
   const { theme } = useSelector((state) => state.theme);
-  const { agreedToApply } = useSelector((state) => state.job)
-  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
+  const navigate = useNavigate()
 
   // Add default values and validation
   if (!jobData) {
@@ -72,47 +70,73 @@ const CardForJob = ({ jobData }) => {
       .slice(0, 2);
   };
 
-
-
   const handleApply = () => {
-    Swal.fire({
-      title: "Apply for this job?",
-      text: "Do you really want to apply?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#4f46e5",  // indigo
-      cancelButtonColor: "#6b7280",   // gray
-      confirmButtonText: "Yes, Apply!",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .post(
-            `${import.meta.env.VITE_BACKEND_URL}/api/application/create/a/${jobData._id}`,
-            {},
-            { withCredentials: true }
-          )
-          .then((response) => {
-            if (response.data.success) {
-              Swal.fire(
-                "Applied!",
-                `Successfully applied for ${response.data.data.companyDetail.name}`,
-                "success"
-              );
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-            Swal.fire("Error!", "Something went wrong. Please try again.", "error");
-          });
-      }
-    });
+    if (user) {
+      Swal.fire({
+        title: "Apply for this job?",
+        text: "Do you really want to apply?",
+        icon: "question",
+        showCancelButton: true,
+
+        // Button colors
+        confirmButtonColor: "#4f46e5", // indigo
+        cancelButtonColor: "#6b7280",  // gray
+
+        // Button text
+        confirmButtonText: "Yes, Apply!",
+        cancelButtonText: "Cancel",
+
+        // Custom styles
+        background: "#f9fafb", // light gray background
+        color: "#111827",      // dark text
+        iconColor: "#4f46e5",  // change icon color
+        buttonsStyling: true,  // allows rounded buttons
+        customClass: {
+          popup: "rounded-2xl shadow-xl p-6",   // popup container
+          title: "text-xl font-semibold text-indigo-700",
+          confirmButton: "px-4 py-2 rounded-lg font-medium",
+          cancelButton: "px-4 py-2 rounded-lg font-medium",
+        },
+
+        // Animation
+        showClass: {
+          popup: "animate__animated animate__fadeInDown"
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOutUp"
+        },
+
+        // Position
+        position: "center", // top, bottom, etc.
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(
+              `${import.meta.env.VITE_BACKEND_URL}/api/application/create/a/${jobData._id}`,
+              {},
+              { withCredentials: true }
+            )
+            .then((response) => {
+              if (response.data.success) {
+                Swal.fire(
+                  "Applied!",
+                  `Successfully applied for ${response.data.data.companyDetail.name}`,
+                  "success"
+                );
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              Swal.fire("Error!", "Something went wrong. Please try again.", "error");
+            });
+        }
+      });
+    }else{
+      navigate('/login')
+      window.scrollTo(0, 0);
+
+    }
   };
-
-
-
-
-
 
   // Enhanced theme classes
   const cardClasses = theme === 'dark'
@@ -121,9 +145,6 @@ const CardForJob = ({ jobData }) => {
 
   return (
     <div className={`${cardClasses} relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-6 max-w-sm border group`}>
-
-
-      {agreedToApply ? "true" : "false"}
 
       {/* Floating Background Decoration */}
       <div className="absolute top-0 right-0 w-32 h-32 -translate-y-16 translate-x-16 opacity-5 pointer-events-none">

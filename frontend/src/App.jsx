@@ -15,6 +15,8 @@ import EditProfile from "./components/Profile/EditProfile";
 import ProfileTopSection from "./components/Profile/ProfileTopView";
 import ChangePass from "./components/Profile/ChangePass";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import LoginForCompany from "./components/LoginForCompany";
+import CompanyDashboard from "./components/CompanyDashboard/CompanyDashboard";
 
 
 function App() {
@@ -50,6 +52,10 @@ function App() {
                     <Route path="change-password" element={<ChangePass />} />
                   </Route>
 
+                  <Route path="/CompanyLogin-signup" element={<LoginForCompany />} />
+                  <Route path="/company" element={<CompanyDashboard />}>
+                    <Route path="about" element={<ProfileTopSection />} />
+                  </Route>
                   <Route path="/about" element={<About />} />
                 </Routes>
 
