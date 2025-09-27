@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit"
 import authReducer from "../features/AuthSlice"
 import themeReducer from "../features/ThemeSlice"
 import jobReducer from '../features/JobAuthSlice'
+import CompanyAuthSlice from "../features/CompanyAuthSlice"
 
 export const store = configureStore({
-    reducer: {
+  reducer: {
     auth: authReducer,
     theme: themeReducer,
-    job: jobReducer
+    job: jobReducer,
+    companyauth: CompanyAuthSlice,
   }
 })
 

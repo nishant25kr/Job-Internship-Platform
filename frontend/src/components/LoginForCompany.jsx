@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { loginStart, loginSuccess, loginFailure } from "../features/AuthSlice";
+import { companyloginStart, companyloginSuccess, companyloginFailure } from "../features/CompanyAuthSlice.js";
 import axios from "axios";
 import { useNavigate, Link, isSession } from "react-router-dom";
 import Input from "./Inputt";
@@ -32,7 +32,7 @@ function LoginForCompany() {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        setLoading(true)
+        dispatch(companyloginStart());
         setErrors({});
 
         axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/company/login`,
@@ -40,19 +40,24 @@ function LoginForCompany() {
             { withCredentials: true }
         )
             .then((response) => {
-                console.log(response.data.data)
+                // console.log(response.data.data)
+                console.log(response)
                 if (response.data.success) {
                     const userOb = response.data.data;
-                            dispatch(loginSuccess({
-                              user: userOb,
-                            }));
+                    dispatch(companyloginSuccess({
+                        company: userOb,
+                    }));
                     // navigate("/company")
-                    setLoading(false)
+                    window.scrollTo(0, 0);
+                } else {
+                    dispatch(companyloginFailure("Invalid credentials"));
+                    setErrors({ submit: "Invalid credentials" });
                 }
             })
             .catch((error) => {
-                alert(error.message)
-                setLoading(false)
+                const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+                dispatch(companyloginFailure(errorMessage));
+                setErrors({ submit: errorMessage });
             })
 
     }

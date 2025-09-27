@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { logoutStart, logoutSucess } from "../../features/AuthSlice"
+import { companylogoutStart, companylogoutSuccess } from "../../features/CompanyAuthSlice"
+
 import axios from "axios"
 import Button from "../Button"
 import ThemeToggle from "../ThemeSwitcher"
@@ -10,11 +12,13 @@ import { Menu, X, User, ChevronDown, Search, Bell, Briefcase } from "lucide-reac
 export default function Navbar() {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
+    const { company } = useSelector((state) => state.companyauth)
     const { theme } = useSelector((state) => state.theme)
-    const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [showUserMenu, setShowUserMenu] = useState(false)
+
+    const navigate = useNavigate()
 
     // Handle scroll effect
     useEffect(() => {
@@ -30,26 +34,56 @@ export default function Navbar() {
     const GiveJobClicket = () => navigate("/CompanyLogin-signup")
 
     const logoutHandler = () => {
-        dispatch(logoutStart())
-        axios
-            .post(
-                `${import.meta.env.VITE_BACKEND_URL}/api/users/logout`,
-                {},
-                { withCredentials: true }
-            )
-            .then((response) => {
-                if (response.data.success) {
-                    dispatch(logoutSucess())
-                    setIsOpen(false)
-                    setShowUserMenu(false)
-                    navigate('/')
-                    window.scrollTo(0, 0);
+        const userobj = localStorage.getItem("Company")
+        const comObj = localStorage.getItem("User")
+        console.log(userobj)
+        console.log(comObj)
+        if (userobj) {
+            console.log("from user")
+            dispatch(logoutStart())
+            axios
+                .post(
+                    `${import.meta.env.VITE_BACKEND_URL}/api/users/logout`,
+                    {},
+                    { withCredentials: true }
+                )
+                .then((response) => {
+                    if (response.data.success) {
+                        dispatch(logoutSucess())
+                        setIsOpen(false)
+                        setShowUserMenu(false)
+                        navigate('/')
+                        window.scrollTo(0, 0);
 
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error)
-            })
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error)
+                })
+
+        } 
+        if(comObj){
+            console.log("from com")
+            dispatch(companylogoutStart())
+            axios
+                .post(
+                    `${import.meta.env.VITE_BACKEND_URL}/api/company/logout`,
+                    {},
+                    { withCredentials: true }
+                )
+                .then((response)=>{
+                    if (response.data.success) {
+                        dispatch(companylogoutSuccess())
+                        navigate('/')
+                        window.scrollTo(0, 0);
+
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error)
+                })
+        }
+
     }
 
     const navLinks = [
@@ -61,6 +95,9 @@ export default function Navbar() {
     return (
         <section className={`sticky top-0  z-50 transition-all duration-100 ${isScrolled ? 'backdrop-blur-md bg-opacity-80' : ''
             }`}>
+            <div>
+                {company ? "there" : "not there"}
+            </div>
             <div className={`mt-3 ml-3 mr-3 rounded-3xl  ${theme === "dark"
                 ? `border-gray-700/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10 ' : 'border-1 m-0 '}`
                 : `border-gray-400/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10 ' : 'border-1 m-0 '}`
@@ -205,22 +242,66 @@ export default function Navbar() {
                                     )}
                                 </div>
                             </div>
-                        ) : (
-                            <div className="flex items-center space-x-3">
-                                <Button
-                                    onClick={LoginClicked}
-                                    className=" border-transparent hover:border-purple-500/50 backdrop-blur-sm"
-                                >
-                                    Login
-                                </Button>
-                                <Button
-                                    onClick={GiveJobClicket}
-                                >
-                                    GiveJob
-                                </Button>
-                                
-                            </div>
-                        )}
+                        )
+                            : company ? (
+                                <div className="flex ">
+                                    <div>
+
+
+                                        <div
+                                            className={`flex items-center space-x-3 p-2 rounded-2xl  transition-all duration-200 hover:scale-105 ${theme === 'dark'
+                                                ? 'hover:bg-gray-800/50 border border-gray-700/50'
+                                                : 'hover:bg-gray-100/50 border border-gray-200/50'
+                                                } backdrop-blur-sm`}
+                                        >
+
+                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme === 'dark'
+                                                ? 'bg-gradient-to-br from-purple-600 to-blue-600'
+                                                : 'bg-gradient-to-br from-purple-500 to-blue-500'
+                                                } shadow-lg`}>
+                                                <span className="text-white font-bold text-sm">
+                                                    {company.name.split(" ")[0]?.charAt(0).toUpperCase() || "U"}
+
+                                                </span>
+                                            </div>
+                                            <div className="hidden lg:block text-left">
+                                                <p className={`text-sm font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                                                    }`}>
+                                                    {company.name || "Company"}
+                                                </p>
+                                                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"
+                                                    }`}>
+                                                    Welcome back!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <Button
+                                        onClick={logoutHandler}
+                                        className={`my-auto  `}
+                                    >
+                                        <span>Sign Out</span>
+                                    </Button>
+                                </div>
+
+
+                            ) : (
+                                <div className="flex items-center space-x-3">
+                                    <Button
+                                        onClick={LoginClicked}
+                                        className=" border-transparent hover:border-purple-500/50 backdrop-blur-sm"
+                                    >
+                                        Login
+                                    </Button>
+                                    <Button
+                                        onClick={GiveJobClicket}
+                                    >
+                                        GiveJob
+                                    </Button>
+
+                                </div>
+                            )}
                         <ThemeToggle />
                     </div>
 
@@ -328,4 +409,6 @@ export default function Navbar() {
             </div>
         </section>
     )
+
+
 }
