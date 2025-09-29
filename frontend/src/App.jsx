@@ -9,7 +9,7 @@ import './App.css';
 import { useSelector } from "react-redux";
 import Loading from "./components/Loading";
 import Profile from "./components/Profile/Profile";
-import ProfileAbout from "./components/Profile/ProfileAbout";
+import ProfileAbout from "./components/CompanyDashboard/ProfileAbout";
 import AppliedJob from "./components/Profile/AppliedJob";
 import EditProfile from "./components/Profile/EditProfile";
 import ProfileTopSection from "./components/Profile/ProfileTopView";
@@ -54,7 +54,7 @@ function App() {
 
                   <Route path="/CompanyLogin-signup" element={<LoginForCompany />} />
                   <Route path="/company" element={<CompanyDashboard />}>
-                    <Route path="about" element={<ProfileTopSection />} />
+                    <Route path="about" element={<ProfileAbout />} />
                   </Route>
                   <Route path="/about" element={<About />} />
                 </Routes>

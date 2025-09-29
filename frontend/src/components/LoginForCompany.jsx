@@ -47,7 +47,7 @@ function LoginForCompany() {
                     dispatch(companyloginSuccess({
                         company: userOb,
                     }));
-                    // navigate("/company")
+                    navigate("/company")
                     window.scrollTo(0, 0);
                 } else {
                     dispatch(companyloginFailure("Invalid credentials"));

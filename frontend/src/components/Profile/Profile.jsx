@@ -32,7 +32,6 @@ function Profile() {
     }, []);
 
 
-    const { user } = useSelector((state) => state.auth)
     const { theme } = useSelector((state) => state.theme)
 
 

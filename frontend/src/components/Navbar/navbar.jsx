@@ -7,7 +7,7 @@ import { companylogoutStart, companylogoutSuccess } from "../../features/Company
 import axios from "axios"
 import Button from "../Button"
 import ThemeToggle from "../ThemeSwitcher"
-import { Menu, X, User, ChevronDown, Search, Bell, Briefcase } from "lucide-react"
+import { Menu, X, User, ChevronDown, Search, Bell, Briefcase, LogOut } from "lucide-react"
 
 export default function Navbar() {
     const dispatch = useDispatch()
@@ -24,66 +24,68 @@ export default function Navbar() {
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20)
-            // setIsScrolled(true)
         }
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
+    // Close mobile menu and dropdowns when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest('.navbar-container')) {
+                setIsOpen(false)
+                setShowUserMenu(false)
+            }
+        }
+        document.addEventListener('click', handleClickOutside)
+        return () => document.removeEventListener('click', handleClickOutside)
     }, [])
 
     const LoginClicked = () => navigate("/login")
     const GiveJobClicket = () => navigate("/CompanyLogin-signup")
 
     const logoutHandler = () => {
-        const userobj = localStorage.getItem("Company")
-        const comObj = localStorage.getItem("User")
-        console.log(userobj)
-        console.log(comObj)
-        if (userobj) {
-            console.log("from user")
-            dispatch(logoutStart())
-            axios
-                .post(
-                    `${import.meta.env.VITE_BACKEND_URL}/api/users/logout`,
-                    {},
-                    { withCredentials: true }
-                )
-                .then((response) => {
-                    if (response.data.success) {
-                        dispatch(logoutSucess())
-                        setIsOpen(false)
-                        setShowUserMenu(false)
-                        navigate('/')
-                        window.scrollTo(0, 0);
+        console.log("from user")
+        dispatch(logoutStart())
+        axios
+            .post(
+                `${import.meta.env.VITE_BACKEND_URL}/api/users/logout`,
+                {},
+                { withCredentials: true }
+            )
+            .then((response) => {
+                if (response.data.success) {
+                    dispatch(logoutSucess())
+                    setIsOpen(false)
+                    setShowUserMenu(false)
+                    navigate('/')
+                    window.scrollTo(0, 0);
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error)
+            })
+    }
 
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error:", error)
-                })
-
-        } 
-        if(comObj){
-            console.log("from com")
-            dispatch(companylogoutStart())
-            axios
-                .post(
-                    `${import.meta.env.VITE_BACKEND_URL}/api/company/logout`,
-                    {},
-                    { withCredentials: true }
-                )
-                .then((response)=>{
-                    if (response.data.success) {
-                        dispatch(companylogoutSuccess())
-                        navigate('/')
-                        window.scrollTo(0, 0);
-
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error:", error)
-                })
-        }
-
+    const companyLogoutHandler = () => {
+        console.log("from com")
+        dispatch(companylogoutStart())
+        axios
+            .post(
+                `${import.meta.env.VITE_BACKEND_URL}/api/company/logout`,
+                {},
+                { withCredentials: true }
+            )
+            .then((response) => {
+                if (response.data.success) {
+                    dispatch(companylogoutSuccess())
+                    navigate('/')
+                    window.scrollTo(0, 0);
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error)
+            })
     }
 
     const navLinks = [
@@ -93,46 +95,46 @@ export default function Navbar() {
     ]
 
     return (
-        <section className={`sticky top-0  z-50 transition-all duration-100 ${isScrolled ? 'backdrop-blur-md bg-opacity-80' : ''
-            }`}>
-            <div>
-                {company ? "there" : "not there"}
-            </div>
-            <div className={`mt-3 ml-3 mr-3 rounded-3xl  ${theme === "dark"
-                ? `border-gray-700/50 ${isScrolled ? ' shadow-2xl shadow-purple-500/10 ' : 'border-1 m-0 '}`
-                : `border-gray-400/50 ${isScrolled ? ' shadow-2xl shadow-blue-500/10 ' : 'border-1 m-0 '}`
-                } backdrop-blur-lg
+        <section className={`sticky top-0 z-50 transition-all duration-300 ${
+            isScrolled ? 'backdrop-blur-md bg-opacity-80' : ''
+        }`}>
+            <div className={`mx-2 sm:mx-3 mt-2 sm:mt-3 rounded-2xl sm:rounded-3xl navbar-container ${
+                theme === "dark"
+                    ? `border border-gray-700/50 ${isScrolled ? 'shadow-2xl shadow-purple-500/10 bg-gray-900/90' : 'bg-gray-900/70'}`
+                    : `border border-gray-400/50 ${isScrolled ? 'shadow-2xl shadow-blue-500/10 bg-white/90' : 'bg-white/70'}`
+            } backdrop-blur-lg`}>
 
-            `}>
-
-                <nav className="flex items-center justify-between w-full md:px-6 sm:px-2 py-4">
-
-                    {/* Logo Section - Enhanced */}
-                    <div className="flex items-center space-x-1 pl-2">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme === 'dark'
-                            ? 'bg-gradient-to-br from-purple-600 to-blue-600'
-                            : 'bg-gradient-to-br from-purple-500 to-blue-500'
-                            } shadow-lg`}>
-                            <Briefcase className="w-5 h-5 text-white" />
+                <nav className="flex items-center justify-between w-full px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                    
+                    {/* Logo Section - More Responsive */}
+                    <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center ${
+                            theme === 'dark'
+                                ? 'bg-gradient-to-br from-purple-600 to-blue-600'
+                                : 'bg-gradient-to-br from-purple-500 to-blue-500'
+                        } shadow-lg`}>
+                            <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                         </div>
-                        <h1 className={`text-2xl md:text-3xl font-black ${theme === "dark"
-                            ? "bg-gradient-to-r from-white via-purple-200 to-blue-200"
-                            : "bg-gradient-to-r from-gray-900 via-purple-600 to-blue-600"
-                            } bg-clip-text text-transparent`}>
+                        <h1 className={`text-lg sm:text-2xl md:text-3xl font-black truncate max-w-[120px] sm:max-w-none ${
+                            theme === "dark"
+                                ? "bg-gradient-to-r from-white via-purple-200 to-blue-200"
+                                : "bg-gradient-to-r from-gray-900 via-purple-600 to-blue-600"
+                        } bg-clip-text text-transparent`}>
                             GetYourJob
                         </h1>
                     </div>
 
-                    {/* Desktop Navigation Links */}
-                    <div className="hidden lg:flex  items-center space-x-8">
+                    {/* Desktop Navigation Links - Hidden on smaller screens */}
+                    <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
                         {navLinks.map((link) => (
                             <a
                                 key={link.name}
                                 href={link.href}
-                                className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-200 hover:scale-105 ${theme === 'dark'
-                                    ? 'text-gray-300 hover:text-white hover:bg-gray-800/50'
-                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50'
-                                    } backdrop-blur-sm`}
+                                className={`flex items-center space-x-2 px-3 xl:px-4 py-2 rounded-full transition-all duration-200 hover:scale-105 ${
+                                    theme === 'dark'
+                                        ? 'text-gray-300 hover:text-white hover:bg-gray-800/50'
+                                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50'
+                                } backdrop-blur-sm`}
                             >
                                 <link.icon className="w-4 h-4" />
                                 <span className="font-medium">{link.name}</span>
@@ -140,76 +142,86 @@ export default function Navbar() {
                         ))}
                     </div>
 
-                    {/* Desktop Auth Section */}
-                    <div className="hidden md:flex items-center space-x-4">
+                    {/* Desktop Auth Section - Responsive breakpoints */}
+                    <div className="hidden sm:flex items-center space-x-2 lg:space-x-4">
                         {user ? (
-                            <div className="flex items-center space-x-3">
-                                {/* Notifications */}
-                                <button className={`p-3 rounded-full transition-all duration-200 hover:scale-110 ${theme === 'dark'
-                                    ? 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-                                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100/50'
-                                    } relative`}>
-                                    <Bell className="w-5 h-5" />
-                                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                            <div className="flex items-center space-x-2 lg:space-x-3">
+                                {/* Notifications - Hidden on smaller screens */}
+                                <button className={`hidden md:flex p-2 lg:p-3 rounded-full transition-all duration-200 hover:scale-110 ${
+                                    theme === 'dark'
+                                        ? 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                                        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100/50'
+                                } relative`}>
+                                    <Bell className="w-4 h-4 lg:w-5 lg:h-5" />
+                                    <div className="absolute -top-1 -right-1 w-2 h-2 lg:w-3 lg:h-3 bg-red-500 rounded-full animate-pulse"></div>
                                 </button>
 
-                                {/* User Menu */}
+                                {/* User Menu - More responsive */}
                                 <div className="relative">
                                     <button
                                         onClick={() => setShowUserMenu(!showUserMenu)}
-                                        className={`flex items-center space-x-3 p-2 rounded-2xl transition-all duration-200 hover:scale-105 ${theme === 'dark'
-                                            ? 'hover:bg-gray-800/50 border border-gray-700/50'
-                                            : 'hover:bg-gray-100/50 border border-gray-200/50'
-                                            } backdrop-blur-sm`}
+                                        className={`flex items-center space-x-2 lg:space-x-3 p-1.5 lg:p-2 rounded-xl lg:rounded-2xl transition-all duration-200 hover:scale-105 ${
+                                            theme === 'dark'
+                                                ? 'hover:bg-gray-800/50 border border-gray-700/50'
+                                                : 'hover:bg-gray-100/50 border border-gray-200/50'
+                                        } backdrop-blur-sm`}
                                     >
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme === 'dark'
-                                            ? 'bg-gradient-to-br from-purple-600 to-blue-600'
-                                            : 'bg-gradient-to-br from-purple-500 to-blue-500'
-                                            } shadow-lg`}>
-                                            <span className="text-white font-bold text-sm">
+                                        <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-lg lg:rounded-xl flex items-center justify-center ${
+                                            theme === 'dark'
+                                                ? 'bg-gradient-to-br from-purple-600 to-blue-600'
+                                                : 'bg-gradient-to-br from-purple-500 to-blue-500'
+                                        } shadow-lg`}>
+                                            <span className="text-white font-bold text-xs lg:text-sm">
                                                 {user.fullname.split(" ")[0]?.charAt(0).toUpperCase() || "U"}
-                                                {user.fullname.split(" ")[1]?.charAt(0).toUpperCase() || "U"}
-
+                                                {user.fullname.split(" ")[1]?.charAt(0).toUpperCase() || ""}
                                             </span>
                                         </div>
-                                        <div className="hidden lg:block text-left">
-                                            <p className={`text-sm font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"
-                                                }`}>
+                                        {/* User info - Hidden on medium screens, shown on large */}
+                                        <div className="hidden xl:block text-left">
+                                            <p className={`text-sm font-semibold ${
+                                                theme === "dark" ? "text-gray-200" : "text-gray-700"
+                                            }`}>
                                                 {user.username || "User"}
                                             </p>
-                                            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"
-                                                }`}>
+                                            <p className={`text-xs ${
+                                                theme === "dark" ? "text-gray-400" : "text-gray-500"
+                                            }`}>
                                                 Welcome back!
                                             </p>
                                         </div>
-                                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''
-                                            } ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                                        <ChevronDown className={`w-3 h-3 lg:w-4 lg:h-4 transition-transform duration-200 ${
+                                            showUserMenu ? 'rotate-180' : ''
+                                        } ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
                                     </button>
 
-                                    {/* User Dropdown */}
+                                    {/* User Dropdown - More responsive */}
                                     {showUserMenu && (
-                                        <div className={`absolute right-0 mt-2 w-64 rounded-2xl shadow-2xl border backdrop-blur-lg z-50 ${theme === 'dark'
-                                            ? 'bg-gray-800/90 border-gray-700/50'
-                                            : 'bg-white/90 border-gray-200/50'
-                                            }`}>
-                                            <div className="p-4 border-b border-opacity-20 border-gray-400">
+                                        <div className={`absolute right-0 mt-2 w-56 lg:w-64 rounded-2xl shadow-2xl border backdrop-blur-lg z-50 ${
+                                            theme === 'dark'
+                                                ? 'bg-gray-800/95 border-gray-700/50'
+                                                : 'bg-white/95 border-gray-200/50'
+                                        }`}>
+                                            <div className="p-3 lg:p-4 border-b border-opacity-20 border-gray-400">
                                                 <div className="flex items-center space-x-3">
-                                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${theme === 'dark'
-                                                        ? 'bg-gradient-to-br from-purple-600 to-blue-600'
-                                                        : 'bg-gradient-to-br from-purple-500 to-blue-500'
-                                                        }`}>
-                                                        <span className="text-white font-bold">
+                                                    <div className={`w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center ${
+                                                        theme === 'dark'
+                                                            ? 'bg-gradient-to-br from-purple-600 to-blue-600'
+                                                            : 'bg-gradient-to-br from-purple-500 to-blue-500'
+                                                    }`}>
+                                                        <span className="text-white font-bold text-sm">
                                                             {user.fullname.split(" ")[0]?.charAt(0).toUpperCase() || "U"}
-                                                            {user.fullname.split(" ")[1]?.charAt(0).toUpperCase() || "U"}
+                                                            {user.fullname.split(" ")[1]?.charAt(0).toUpperCase() || ""}
                                                         </span>
                                                     </div>
-                                                    <div>
-                                                        <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"
-                                                            }`}>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className={`font-semibold text-sm lg:text-base truncate ${
+                                                            theme === "dark" ? "text-white" : "text-gray-900"
+                                                        }`}>
                                                             {user.username || "User"}
                                                         </p>
-                                                        <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"
-                                                            }`}>
+                                                        <p className={`text-xs lg:text-sm truncate ${
+                                                            theme === "dark" ? "text-gray-400" : "text-gray-600"
+                                                        }`}>
                                                             {user.email || "user@example.com"}
                                                         </p>
                                                     </div>
@@ -217,156 +229,167 @@ export default function Navbar() {
                                             </div>
 
                                             <div className="p-2">
-                                                <a href="/profile/about" className={`flex items-center space-x-3 w-full p-3 rounded-lg transition-colors ${theme === 'dark'
-                                                    ? 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
-                                                    : 'text-gray-600 hover:bg-gray-100/50 hover:text-gray-900'
-                                                    }`}>
+                                                <a href="/profile/about" className={`flex items-center space-x-3 w-full p-2.5 lg:p-3 rounded-lg transition-colors ${
+                                                    theme === 'dark'
+                                                        ? 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                                                        : 'text-gray-600 hover:bg-gray-100/50 hover:text-gray-900'
+                                                }`}>
                                                     <User className="w-4 h-4" />
                                                     <span>My Profile</span>
                                                 </a>
-                                                <a href="/applications" className={`flex items-center space-x-3 w-full p-3 rounded-lg transition-colors ${theme === 'dark'
-                                                    ? 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
-                                                    : 'text-gray-600 hover:bg-gray-100/50 hover:text-gray-900'
-                                                    }`}>
+                                                <a href="/applications" className={`flex items-center space-x-3 w-full p-2.5 lg:p-3 rounded-lg transition-colors ${
+                                                    theme === 'dark'
+                                                        ? 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                                                        : 'text-gray-600 hover:bg-gray-100/50 hover:text-gray-900'
+                                                }`}>
                                                     <Briefcase className="w-4 h-4" />
                                                     <span>My Applications</span>
                                                 </a>
-                                                <button
+                                                <Button
                                                     onClick={logoutHandler}
-                                                    className={`flex items-center space-x-3 w-full p-3 rounded-lg transition-colors text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20`}
+                                                    
                                                 >
+                                                    <LogOut className="w-4 h-4" />
                                                     <span>Sign Out</span>
-                                                </button>
+                                                </Button>
                                             </div>
                                         </div>
                                     )}
                                 </div>
                             </div>
-                        )
-                            : company ? (
-                                <div className="flex ">
-                                    <div>
-
-
-                                        <div
-                                            className={`flex items-center space-x-3 p-2 rounded-2xl  transition-all duration-200 hover:scale-105 ${theme === 'dark'
-                                                ? 'hover:bg-gray-800/50 border border-gray-700/50'
-                                                : 'hover:bg-gray-100/50 border border-gray-200/50'
-                                                } backdrop-blur-sm`}
-                                        >
-
-                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme === 'dark'
-                                                ? 'bg-gradient-to-br from-purple-600 to-blue-600'
-                                                : 'bg-gradient-to-br from-purple-500 to-blue-500'
-                                                } shadow-lg`}>
-                                                <span className="text-white font-bold text-sm">
-                                                    {company.name.split(" ")[0]?.charAt(0).toUpperCase() || "U"}
-
-                                                </span>
-                                            </div>
-                                            <div className="hidden lg:block text-left">
-                                                <p className={`text-sm font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"
-                                                    }`}>
-                                                    {company.name || "Company"}
-                                                </p>
-                                                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"
-                                                    }`}>
-                                                    Welcome back!
-                                                </p>
-                                            </div>
-                                        </div>
+                        ) : company ? (
+                            <div className="flex items-center space-x-2 lg:space-x-3">
+                                <div className={`flex items-center space-x-2 lg:space-x-3 p-1.5 lg:p-2 rounded-xl lg:rounded-2xl transition-all duration-200 hover:scale-105 ${
+                                    theme === 'dark'
+                                        ? 'hover:bg-gray-800/50 border border-gray-700/50'
+                                        : 'hover:bg-gray-100/50 border border-gray-200/50'
+                                } backdrop-blur-sm`}>
+                                    <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-lg lg:rounded-xl flex items-center justify-center ${
+                                        theme === 'dark'
+                                            ? 'bg-gradient-to-br from-purple-600 to-blue-600'
+                                            : 'bg-gradient-to-br from-purple-500 to-blue-500'
+                                    } shadow-lg`}>
+                                        <span className="text-white font-bold text-xs lg:text-sm">
+                                            {company.name.split(" ")[0]?.charAt(0).toUpperCase() || "C"}
+                                        </span>
                                     </div>
-
-                                    <Button
-                                        onClick={logoutHandler}
-                                        className={`my-auto  `}
-                                    >
-                                        <span>Sign Out</span>
-                                    </Button>
+                                    <div className="hidden lg:block text-left">
+                                        <p className={`text-sm font-semibold ${
+                                            theme === "dark" ? "text-gray-200" : "text-gray-700"
+                                        }`}>
+                                            {company.name || "Company"}
+                                        </p>
+                                        <p className={`text-xs ${
+                                            theme === "dark" ? "text-gray-400" : "text-gray-500"
+                                        }`}>
+                                            Welcome back!
+                                        </p>
+                                    </div>
                                 </div>
 
-
-                            ) : (
-                                <div className="flex items-center space-x-3">
-                                    <Button
-                                        onClick={LoginClicked}
-                                        className=" border-transparent hover:border-purple-500/50 backdrop-blur-sm"
-                                    >
-                                        Login
-                                    </Button>
-                                    <Button
-                                        onClick={GiveJobClicket}
-                                    >
-                                        GiveJob
-                                    </Button>
-
-                                </div>
-                            )}
+                                <Button
+                                    onClick={companyLogoutHandler}
+                                    className="text-xs lg:text-sm px-2 lg:px-4 py-1.5 lg:py-2"
+                                >
+                                    <LogOut className="w-3 h-3 lg:w-4 lg:h-4 mr-1" />
+                                    <span className="hidden md:inline">Sign Out</span>
+                                </Button>
+                            </div>
+                        ) : (
+                            <div className="flex items-center space-x-2 lg:space-x-3">
+                                <Button
+                                    onClick={LoginClicked}
+                                    className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2 border-transparent hover:border-purple-500/50 backdrop-blur-sm"
+                                >
+                                    Login
+                                </Button>
+                                <Button
+                                    onClick={GiveJobClicket}
+                                    className="text-xs lg:text-sm px-3 lg:px-4 py-1.5 lg:py-2"
+                                >
+                                    GiveJob
+                                </Button>
+                            </div>
+                        )}
                         <ThemeToggle />
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <div className="md:hidden flex items-center space-x-1">
+                    {/* Mobile Menu Section */}
+                    <div className="flex sm:hidden items-center space-x-2">
                         <ThemeToggle />
-
                         <button
-                            onClick={() => setIsOpen(!isOpen)}
-                            className={`p-2 rounded-xl transition-all duration-200 hover:scale-110 ${theme === 'dark'
-                                ? 'text-gray-300 hover:bg-gray-800/50'
-                                : 'text-gray-600 hover:bg-gray-100/50'
-                                }`}
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                setIsOpen(!isOpen)
+                            }}
+                            className={`p-2 rounded-xl transition-all duration-200 hover:scale-110 ${
+                                theme === 'dark'
+                                    ? 'text-gray-300 hover:bg-gray-800/50'
+                                    : 'text-gray-600 hover:bg-gray-100/50'
+                            }`}
+                            aria-label="Toggle mobile menu"
                         >
-                            {isOpen ? <X size={24} /> : <Menu size={24} />}
+                            {isOpen ? <X size={20} /> : <Menu size={20} />}
                         </button>
                     </div>
                 </nav>
 
-                {/* Mobile Menu */}
-                <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                {/* Mobile Menu - Enhanced responsiveness */}
+                <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+                    isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}>
+                    <div className={`border-t backdrop-blur-lg ${
+                        theme === 'dark' ? 'border-gray-700/50' : 'border-gray-200/50'
                     }`}>
-                    <div className={`border-t backdrop-blur-lg ${theme === 'dark' ? 'border-gray-700/50' : 'border-gray-200/50'
-                        }`}>
-                        <div className="px-6 py-4 space-y-4">
-
+                        <div className="px-4 py-4 space-y-4">
+                            
                             {/* Mobile Navigation Links */}
                             <div className="space-y-2">
                                 {navLinks.map((link, index) => (
                                     <a
                                         key={link.name}
                                         href={link.href}
-                                        onClick={() => setIsOpen(!isOpen)}
-                                        className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 hover:scale-105 ${theme === 'dark'
-                                            ? 'text-gray-300 hover:bg-gray-800/50 hover:text-white'
-                                            : 'text-gray-600 hover:bg-gray-100/50 hover:text-gray-900'
-                                            }`}
+                                        onClick={() => setIsOpen(false)}
+                                        className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 hover:scale-105 ${
+                                            theme === 'dark'
+                                                ? 'text-gray-300 hover:bg-gray-800/50 hover:text-white'
+                                                : 'text-gray-600 hover:bg-gray-100/50 hover:text-gray-900'
+                                        }`}
                                         style={{ animationDelay: `${index * 100}ms` }}
                                     >
                                         <link.icon className="w-5 h-5" />
-                                        <span className="font-medium" >{link.name}</span>
+                                        <span className="font-medium">{link.name}</span>
                                     </a>
                                 ))}
                             </div>
 
                             {/* Mobile Auth Section */}
                             {user ? (
-                                <div onClick={() => { setIsOpen(!isOpen) }} className="space-y-4 pt-4 border-t border-opacity-20 border-gray-400">
-                                    <Link className="flex items-center space-x-3 p-3" to="/profile/about">
-                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${theme === 'dark'
-                                            ? 'bg-gradient-to-br from-purple-600 to-blue-600'
-                                            : 'bg-gradient-to-br from-purple-500 to-blue-500'
-                                            }`}>
-                                            <div className="text-white font-bold">
+                                <div className="space-y-4 pt-4 border-t border-opacity-20 border-gray-400">
+                                    <Link 
+                                        className="flex items-center space-x-3 p-3" 
+                                        to="/profile/about"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                                            theme === 'dark'
+                                                ? 'bg-gradient-to-br from-purple-600 to-blue-600'
+                                                : 'bg-gradient-to-br from-purple-500 to-blue-500'
+                                        }`}>
+                                            <span className="text-white font-bold">
                                                 {user.fullname.split(" ")[0]?.charAt(0).toUpperCase() || "U"}
-                                                {user.fullname.split(" ")[1]?.charAt(0).toUpperCase() || "U"}
-                                            </div>
+                                                {user.fullname.split(" ")[1]?.charAt(0).toUpperCase() || ""}
+                                            </span>
                                         </div>
-                                        <div>
-                                            <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"
-                                                }`}>
+                                        <div className="flex-1 min-w-0">
+                                            <p className={`font-semibold truncate ${
+                                                theme === "dark" ? "text-gray-200" : "text-gray-700"
+                                            }`}>
                                                 {user.fullname || "User"}
                                             </p>
-                                            <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"
-                                                }`}>
+                                            <p className={`text-sm truncate ${
+                                                theme === "dark" ? "text-gray-400" : "text-gray-500"
+                                            }`}>
                                                 Welcome back!
                                             </p>
                                         </div>
@@ -374,11 +397,48 @@ export default function Navbar() {
                                     <Button
                                         onClick={() => {
                                             logoutHandler();
-                                            setIsOpen(!isOpen)
+                                            setIsOpen(false)
                                         }}
-                                        className="w-full mx-auto"
+                                        className="w-full"
                                     >
+                                        <LogOut className="w-4 h-4 mr-2" />
                                         Logout
+                                    </Button>
+                                </div>
+                            ) : company ? (
+                                <div className="space-y-4 pt-4 border-t border-opacity-20 border-gray-400">
+                                    <div className="flex items-center space-x-3 p-3">
+                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                                            theme === 'dark'
+                                                ? 'bg-gradient-to-br from-purple-600 to-blue-600'
+                                                : 'bg-gradient-to-br from-purple-500 to-blue-500'
+                                        }`}>
+                                            <span className="text-white font-bold">
+                                                {company.name.split(" ")[0]?.charAt(0).toUpperCase() || "C"}
+                                            </span>
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className={`font-semibold truncate ${
+                                                theme === "dark" ? "text-gray-200" : "text-gray-700"
+                                            }`}>
+                                                {company.name || "Company"}
+                                            </p>
+                                            <p className={`text-sm truncate ${
+                                                theme === "dark" ? "text-gray-400" : "text-gray-500"
+                                            }`}>
+                                                Welcome back!
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <Button
+                                        onClick={() => {
+                                            companyLogoutHandler();
+                                            setIsOpen(false)
+                                        }}
+                                        className="w-full"
+                                    >
+                                        <LogOut className="w-4 h-4 mr-2" />
+                                        Sign Out
                                     </Button>
                                 </div>
                             ) : (
@@ -386,20 +446,20 @@ export default function Navbar() {
                                     <Button
                                         onClick={() => {
                                             LoginClicked();
-                                            setIsOpen(!isOpen)
+                                            setIsOpen(false)
                                         }}
-                                        className="w-full  mx-auto"
+                                        className="w-full"
                                     >
                                         Login
                                     </Button>
                                     <Button
                                         onClick={() => {
-                                            SignupClicked();
-                                            setIsOpen(!isOpen);
+                                            GiveJobClicket();
+                                            setIsOpen(false);
                                         }}
-                                        className="w-full  mx-auto bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                                        className=""
                                     >
-                                        Sign Up
+                                        Give Job
                                     </Button>
                                 </div>
                             )}
@@ -409,6 +469,4 @@ export default function Navbar() {
             </div>
         </section>
     )
-
-
 }

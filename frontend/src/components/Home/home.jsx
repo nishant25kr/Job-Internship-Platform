@@ -1,5 +1,4 @@
 import axios from "axios";
-import { AnimatedTestimonialsDemo } from "./AnimatedTestimonialsDemo";
 import { fetchingStart, fetchingSuccess, fetchingFailed } from "../../features/JobAuthSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
