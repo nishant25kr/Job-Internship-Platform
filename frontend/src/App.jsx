@@ -17,6 +17,8 @@ import ChangePass from "./components/Profile/ChangePass";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import LoginForCompany from "./components/LoginForCompany";
 import CompanyDashboard from "./components/CompanyDashboard/CompanyDashboard";
+import CreateJob from "./components/CompanyDashboard/CreateJob";
+import ViewJob from "./components/CompanyDashboard/ViewJob";
 
 
 function App() {
@@ -55,6 +57,8 @@ function App() {
                   <Route path="/CompanyLogin-signup" element={<LoginForCompany />} />
                   <Route path="/company" element={<CompanyDashboard />}>
                     <Route path="about" element={<ProfileAbout />} />
+                    <Route path="create-job" element={<CreateJob />} />
+                    <Route path="get-all-jobs" element={<ViewJob />} />
                   </Route>
                   <Route path="/about" element={<About />} />
                 </Routes>
