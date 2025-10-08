@@ -78,23 +78,9 @@ npm start
 arduino
 Copy code
 http://localhost:3000
-📸 Screenshots (Optional)
-Add screenshots or a demo video link here.
 
 🌐 Live Demo
 Deployed on Vercel: Job & Internship Platform
 
 👨‍💻 Author
 Nishant Kumar
-
-GitHub: @nishant25kr
-
-LinkedIn: (add your LinkedIn here)
-
-📝 License
-This project is licensed under the MIT License.
-
-yaml
-Copy code
-
----
