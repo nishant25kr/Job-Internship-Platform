@@ -148,7 +148,7 @@ function NavigationMenu() {
             </li>
             <li>
               <Link
-                to="get-all-jobs"
+                to="getall-jobs"
                 className={linkHoverClasses}
                 onClick={closeMenu}
               >

@@ -72,61 +72,53 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginwithOauth = asyncHandler(async (req, res) => {
-
   const { userId, email, name, profilePhoto } = req.body;
 
   if (!userId) {
-    throw new ApiError(400, "User Id is not available")
+    throw new ApiError(400, "User Id is not available");
   }
 
-  const user = await User.findOne({ email }).select("-password -refreshToken")
+  let user = await User.findOne({ email }).select("-password -refreshToken");
 
   if (!user) {
-
-    console.log("User not exist")
-
-    const user = await User.create({
-      username: name,
+    console.log("User does not exist, creating new user...");
+    user = await User.create({
       fullname: name,
       email,
       profilePhoto,
-      provider: 'google'
-    })
-
+      provider: "google",
+    });
+  } else {
+    console.log("User already exists");
   }
 
+  // Generate tokens
+  const { accessToken, refreshToken } = await generateAccessandRefreshToken(user._id);
 
-  console.log("User already exist")
-  const { accessToken, refreshToken } = await generateAccessandRefreshToken(
-    user._id
-  );
-
-
-  const LoggedInUser = await User.findById(user._id).select(
+  const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
 
-  const option = {
+  const isProduction = process.env.NODE_ENV === "production";
+  const cookieOptions = {
     httpOnly: true,
-    secure: true, // false for local dev
-    sameSite: "lax", // lax works better locally
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
     path: "/",
   };
 
-
   return res
     .status(200)
-    .cookie("accessToken", accessToken, option)
-    .cookie("refreshToken", refreshToken, option)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .cookie("refreshToken", refreshToken, cookieOptions)
     .json(
       new ApiResponse(
         200,
-        { LoggedInUser, accessToken, refreshToken },
-        "User login successfull"
+        { loggedInUser, accessToken, refreshToken },
+        "User login successful"
       )
     );
-
-})
+});
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;

@@ -10,16 +10,14 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
 
     try {
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
-        console.log(token)
+
         if (!token) {
             throw new ApiError(401, "Token is not there");
         }
 
         const decondedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-        console.log(decondedToken)
 
         const user = await User.findById(decondedToken?._id).select("-password -refreshToken")
-        console.log(user)
 
         if (!user) {
             throw new ApiError(401, "User not found, Invalid accesstoken");
@@ -41,7 +39,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
 export const verifyCompanyJWT = asyncHandler(async (req, res, next) => {
     try {
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
-        console.log(token)
+        
         if (!token) {
             throw new ApiError(401, "Token is not there");
         }

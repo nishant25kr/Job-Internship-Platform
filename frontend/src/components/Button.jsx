@@ -19,7 +19,7 @@ function Button({
                     ? 'bg-gradient-to-r from-slate-300 via-purple-300 to-indigo-300 hover:from-slate-400 hover:via-purple-400 hover:to-indigo-400 text-gray-800 border-gray-300/50 hover:shadow-purple-200/25'
                     : 'bg-gradient-to-r from-slate-800 via-purple-900 to-indigo-900 hover:from-slate-800 hover:via-purple-800 hover:to-indigo-800 text-white border-white/20 hover:shadow-purple-500/25'
                 }
-  font-semibold text-base rounded-xl
+  font-semibold text-base rounded-lg
   transition-all duration-300 ease-out transform
   hover:scale-102 hover:-translate-y-0.5
   focus:outline-none focus:ring-4 focus:ring-purple-500/50

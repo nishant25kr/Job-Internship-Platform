@@ -27,6 +27,8 @@ const createApplication = asyncHandler(async (req, res) => {
 
     const company = await companyModels.findById(jobToApply.owner).select("name")
 
+    const userDetail = await User.findById(user)
+    console.log("User Details", userDetail)
     const existApplication = await Application.findOne({
         jobId: jobId,
         applicantId: user._id,
@@ -55,8 +57,11 @@ const createApplication = asyncHandler(async (req, res) => {
             place: jobToApply.place,
             salary: jobToApply.salary,
         },
-
-
+        applicantDetail: {
+            email: userDetail.email,
+            fullname: userDetail.fullname,
+            resumeUrl: ""
+        }
     });
 
     if (!application) {
@@ -114,8 +119,30 @@ const getApplication = asyncHandler(async (req, res) => {
     );
 });
 
+const getAllApplicants = asyncHandler(async (req, res) => {
+    const { jobid } = req.params
+
+    if (!jobid) {
+        throw new ApiError(400, "Invalid job ID");
+    }
+
+    const applications = await Application.find({ jobId: jobid })
+
+    if (!applications) {
+        throw new ApiError(400, "Error while creating application")
+    }
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(200, applications, "Applications fetched successfully")
+        )
+
+})
+
 export {
     createApplication,
     deleteApplication,
-    getApplication
+    getApplication,
+    getAllApplicants
 };

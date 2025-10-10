@@ -19,6 +19,9 @@ import LoginForCompany from "./components/LoginForCompany";
 import CompanyDashboard from "./components/CompanyDashboard/CompanyDashboard";
 import CreateJob from "./components/CompanyDashboard/CreateJob";
 import ViewJob from "./components/CompanyDashboard/ViewJob";
+import CardForCompanysJob from "./components/CompanyDashboard/CardForCompanysJob";
+import JobsCreated from "./components/CompanyDashboard/JobsCreated";
+import ViewApplicants from "./components/CompanyDashboard/ViewApplicants";
 
 
 function App() {
@@ -58,7 +61,9 @@ function App() {
                   <Route path="/company" element={<CompanyDashboard />}>
                     <Route path="about" element={<ProfileAbout />} />
                     <Route path="create-job" element={<CreateJob />} />
-                    <Route path="get-all-jobs" element={<ViewJob />} />
+                    <Route path="getall-jobs" element={<JobsCreated />} >
+                      <Route path="applicants/:jobId" element={<ViewApplicants/>} />
+                    </Route>
                   </Route>
                   <Route path="/about" element={<About />} />
                 </Routes>

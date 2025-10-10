@@ -6,9 +6,10 @@ import jwt from "jsonwebtoken";
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
+        required: function () {
+            return this.provider === "local";
+        },
         lowercase: true,
-        unique:false,
         trim: true,
 
     },

@@ -15,7 +15,7 @@ const applicationSchema = new mongoose.Schema(
     applicantDetail: {
       type: mongoose.Schema.Types.Mixed, 
       default: null,
-      strict: false
+      required: true,
     },
     companyDetail:{
       type: mongoose.Schema.Types.Mixed, 

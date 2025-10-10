@@ -35,7 +35,9 @@ const createJob = asyncHandler(async (req, res) => {
     throw new ApiError(400, "salary is empty");
   }
 
-  const owner = await Company.findById(req.user._id).select(
+  const id = req.company._id
+
+  const owner = await Company.findById(id).select(
     "-password -refreshToken"
   );
 
@@ -46,7 +48,7 @@ const createJob = asyncHandler(async (req, res) => {
   const existsamejob = await Job.findOne({
     name: name,
     title: title,
-    owner: req.user._id,
+    owner: req.company._id,
   });
 
   if (existsamejob) {
@@ -54,7 +56,7 @@ const createJob = asyncHandler(async (req, res) => {
   }
 
   const createJob = await Job.create({
-    name,
+    name:req.company?.name,
     title,
     description,
     Type,
@@ -92,22 +94,36 @@ const getAppliedJob = asyncHandler(async (req, res) => {
 
   const job = await Job.findById(jobId)
 
-  if(!job){
-    throw new ApiError(400,"Job is not available")
+  if (!job) {
+    throw new ApiError(400, "Job is not available")
   }
 
   return res
-  .status(200)
-  .json(
-    new ApiResponse(200,job,"job fetched success fully")
-  )
+    .status(200)
+    .json(
+      new ApiResponse(200, job, "job fetched success fully")
+    )
 
-  
+
 
 })
+
+const getCompanyJobs = asyncHandler(async (req, res) => {
+  const companyId = req.company?._id
+
+  const jobs = await Job.find({ owner: companyId })
+    .populate("owner", "name email")
+    .sort({ createdAt: -1 });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, jobs, "Jobs fetched successfully"));
+});
+
 
 export {
   createJob,
   getallJob,
-  getAppliedJob
+  getAppliedJob,
+  getCompanyJobs
 };
