@@ -118,7 +118,7 @@ export default function Login() {
       muted: theme === "light" ? "text-gray-500" : "text-gray-400",
     },
     leftSection: theme === "light" ? "bg-gradient-to-b from-white via-gray-200 via-gray-200 via-gray-200 to-white" : "bg-gradient-to-b from-black via-gray-800 via-gray-600 via-gray-800 to-black",
-    card: theme === "light" ? "bg-white" : "bg-gray-800",
+    card: theme === "light" ? "bg-white" : "bg-gray-700",
   };
 
   return (

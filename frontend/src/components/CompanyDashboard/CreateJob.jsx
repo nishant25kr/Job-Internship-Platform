@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Button from "../Button";
 
 const CreateJob = () => {
   const { theme } = useSelector((state) => state.theme);
@@ -60,47 +61,22 @@ const CreateJob = () => {
     }
   };
 
-  const inputClasses = `w-full px-4 py-3 rounded-lg border transition-all duration-200 ${
-    theme === "dark"
+  const inputClasses = `w-full px-4 py-3 rounded-lg border transition-all duration-200 ${theme === "dark"
       ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
       : "bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-  } focus:outline-none`;
+    } focus:outline-none`;
 
-  const labelClasses = `block text-sm font-semibold mb-2 ${
-    theme === "dark" ? "text-gray-200" : "text-gray-700"
-  }`;
+  const labelClasses = `block text-sm font-semibold mb-2 ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+    }`;
 
   return (
-    <div className="min-h-[90vh] flex items-center justify-around mx-auto px-4 py-12">
+    <div className="min-h-[90vh] flex items-center justify-around mx-auto px-4 ">
       <div
-        className={`w-full max-w-2xl rounded-2xl  p-8 ${
-          theme === "dark"
-            ? ""
-            : "bg-white"
-        }`}
+        className={`w-full max-w-2xl`}
       >
-        {/* Header */}
-        <div className="mb-8">
-          <h2
-            className={`text-3xl font-bold mb-2 ${
-              theme === "dark"
-                ? "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-                : "text-gray-900"
-            }`}
-          >
-            Create New Job
-          </h2>
-          <p
-            className={`text-sm ${
-              theme === "dark" ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            Fill in the details to post a new job opportunity
-          </p>
-        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Company Name */}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label htmlFor="name" className={labelClasses}>
               Company Name
@@ -246,18 +222,11 @@ const CreateJob = () => {
           </div>
 
           {/* Submit Button */}
-          <button
+          <Button
             type="submit"
             disabled={loading}
-            className={`w-full py-4 rounded-lg font-semibold text-white transition-all duration-200 ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : theme === "dark"
-                ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-blue-500/50"
-                : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-blue-500/30"
-            } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-              theme === "dark" ? "focus:ring-offset-gray-900" : ""
-            } transform hover:scale-[1.02] active:scale-[0.98]`}
+            className="w-full mx-auto"
+
           >
             {loading ? (
               <span className="flex items-center justify-center">
@@ -286,21 +255,20 @@ const CreateJob = () => {
             ) : (
               "Create Job Posting"
             )}
-          </button>
+          </Button>
         </form>
 
         {/* Success/Error Message */}
         {message && (
           <div
-            className={`mt-6 p-4 rounded-lg ${
-              message.includes("success")
+            className={`mt-6 p-4 rounded-lg ${message.includes("success")
                 ? theme === "dark"
                   ? "bg-green-900/30 border border-green-700 text-green-300"
                   : "bg-green-50 border border-green-200 text-green-800"
                 : theme === "dark"
-                ? "bg-red-900/30 border border-red-700 text-red-300"
-                : "bg-red-50 border border-red-200 text-red-800"
-            } text-center font-medium`}
+                  ? "bg-red-900/30 border border-red-700 text-red-300"
+                  : "bg-red-50 border border-red-200 text-red-800"
+              } text-center font-medium`}
           >
             {message}
           </div>

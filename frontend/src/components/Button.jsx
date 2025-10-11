@@ -14,7 +14,7 @@ function Button({
             type={type}
             disabled={disabled}
             className={`
-  group relative inline-flex items-center justify-center mx-4 px-7 py-2
+  group relative inline-flex items-center justify-center mx-3 px-7 py-2
   ${theme === 'light'
                     ? 'bg-gradient-to-r from-slate-300 via-purple-300 to-indigo-300 hover:from-slate-400 hover:via-purple-400 hover:to-indigo-400 text-gray-800 border-gray-300/50 hover:shadow-purple-200/25'
                     : 'bg-gradient-to-r from-slate-800 via-purple-900 to-indigo-900 hover:from-slate-800 hover:via-purple-800 hover:to-indigo-800 text-white border-white/20 hover:shadow-purple-500/25'
